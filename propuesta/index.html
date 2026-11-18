@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Cygnus Air · Propuesta</title>
+<title>Nueva web Cygnus Air</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -23,6 +23,7 @@
   --body:"Inter", system-ui, -apple-system, Segoe UI, sans-serif;
   --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
   --gutter:clamp(16px, 4vw, 56px);
+  color-scheme:dark;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--night);color:var(--ink)}
@@ -53,7 +54,7 @@ img,svg{display:block}
 @media (hover:none){.cursor{display:none}}
 
 /* ---------- cabecera ---------- */
-.header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px var(--gutter);transition:background .4s, backdrop-filter .4s}
+.header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:calc(16px + env(safe-area-inset-top, 0px)) var(--gutter) 16px;transition:background .4s, backdrop-filter .4s}
 .header.is-scrolled{background:rgba(6,11,24,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .logo img{height:clamp(34px,4vw,44px);width:auto}
 .nav{display:flex;gap:26px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
