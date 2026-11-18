@@ -5,7 +5,7 @@ Nueva web de **Cygnus Air** (ygnusair.com) con movimiento: textos que entran let
 ## Estado
 
 **Fase 1 · Propuesta visual** (esta carpeta `propuesta/`)
-Maqueta en un solo archivo para ver el estilo y las animaciones antes de pasarlo a WordPress. Los textos, cifras e imágenes son provisionales.
+Maqueta en un solo archivo para ver el estilo y las animaciones antes de pasarlo a WordPress. Textos, fotos, logo y colores sacados de la web actual (www.ygnusair.com/cms). Las fotos optimizadas están en `propuesta/img/` y el script las incluye dentro de `index.html`.
 
 - Abrir `propuesta/index.html` en el navegador (funciona sin internet; solo las fuentes vienen de Google Fonts).
 - Para regenerarlo después de editar `propuesta/src/index.html`:
@@ -23,13 +23,16 @@ Tema a medida, como el de AMUMA: se sube como `.zip`, crea solo las páginas y l
 | Sección | Movimiento |
 |---|---|
 | Entrada | Pantalla de carga con contador y el nombre letra a letra |
-| Portada | Cielo estrellado que reacciona al ratón, la constelación del Cisne (Cygnus) se dibuja sola, estrellas fugaces, estela de avión |
+| Portada | Foto nocturna del 757 que se acerca al entrar, cielo estrellado que reacciona al ratón y la constelación del Cisne (Cygnus) que se dibuja sola |
 | Cinta | Palabras en bucle que aceleran y se inclinan con la velocidad del scroll |
-| Compañía | El párrafo se ilumina palabra a palabra; contadores animados |
-| Servicios | "Plan de vuelo": un avión recorre una ruta mientras bajas, con altímetro, velocidad y rumbo |
-| Flota | Desplazamiento horizontal; cada avión entra "aterrizando" con líneas de velocidad |
+| Quiénes somos | El párrafo se ilumina palabra a palabra; contadores animados |
+| Certificaciones | Filas que se dibujan al aparecer y se rellenan de azul al pasar el ratón |
+| Servicios | "Plan de vuelo": un avión recorre una ruta mientras bajas, con altímetro, velocidad y rumbo; cada tramo enseña un servicio |
+| Destinos | El mapa se abre en círculo desde Madrid, con barrido de radar |
+| Flota | Desplazamiento horizontal: 757-200PCF con ficha técnica animada, historia de la flota y hueco para el próximo avión |
 | Galería | Fotos que se descubren como una cortina y con parallax |
-| Contacto | Botón magnético y pista de aterrizaje animada |
+| Equipo | Lista desplegable con la trayectoria de cada persona |
+| Contacto | Botón magnético y formulario con etiquetas flotantes |
 
 Respeta la opción del sistema "reducir movimiento": quien la tenga activada ve la web estática.
 

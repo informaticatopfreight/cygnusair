@@ -9,13 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --night:#060914;
-  --night-2:#0B1226;
+  /* colores sacados del logotipo de Cygnus Air */
+  --brand-navy:#264A82;   /* "CYGNUS" y cisne grande */
+  --brand-sky:#7CBCD4;    /* "AIR" y cisne pequeño */
+  --night:#060B18;
+  --night-2:#0B1A33;
   --ink:#EAF0FF;
-  --ink-dim:#8C97B8;
+  --ink-dim:#8E9CBA;
   --line:rgba(234,240,255,.14);
-  --accent:#FF5B26;      /* naranja "señal" de pista */
-  --accent-2:#7FB4FF;    /* azul cielo alto */
+  --accent:var(--brand-sky);
   --display:"Archivo", "Arial Narrow", system-ui, sans-serif;
   --body:"Inter", system-ui, -apple-system, Segoe UI, sans-serif;
   --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
@@ -27,19 +29,20 @@ html.lenis, html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto !important}
 body{background:var(--night);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-svg{display:block}
+img,svg{display:block}
 ::selection{background:var(--accent);color:var(--night)}
 
-/* ---------- utilidades de texto partido ---------- */
+/* ---------- texto partido ---------- */
 .w{display:inline-block;white-space:nowrap;overflow:hidden;vertical-align:top;padding-bottom:.06em;margin-bottom:-.06em}
 .c{display:inline-block;will-change:transform}
 .display{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.88}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);display:flex;align-items:center;gap:10px}
 .eyebrow::before{content:"";width:28px;height:1px;background:var(--accent)}
+.accent{color:var(--accent)}
 
 /* ---------- preloader ---------- */
 .preloader{position:fixed;inset:0;z-index:100;background:var(--night);display:grid;place-items:center;overflow:hidden}
-.preloader__word{font-size:clamp(44px, 11vw, 170px)}
+.preloader__word{font-size:clamp(40px, 10vw, 170px)}
 .preloader__count{position:absolute;right:var(--gutter);bottom:var(--gutter);font-family:var(--mono);font-size:14px;color:var(--ink-dim)}
 .preloader__bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--accent);transform-origin:left;transform:scaleX(0)}
 
@@ -49,133 +52,223 @@ svg{display:block}
 @media (hover:none){.cursor{display:none}}
 
 /* ---------- cabecera ---------- */
-.header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:20px var(--gutter);mix-blend-mode:difference}
-.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-stretch:125%;font-weight:800;letter-spacing:.04em;font-size:15px}
-.logo svg{width:26px;height:26px}
-.nav{display:flex;gap:28px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px var(--gutter);transition:background .4s, backdrop-filter .4s}
+.header.is-scrolled{background:rgba(6,11,24,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.logo img{height:clamp(34px,4vw,44px);width:auto}
+.nav{display:flex;gap:26px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
 .nav a{position:relative;overflow:hidden;display:inline-block}
 .nav a span{display:block;transition:transform .45s cubic-bezier(.7,0,.2,1)}
-.nav a span::after{content:attr(data-t);position:absolute;left:0;top:100%}
+.nav a span::after{content:attr(data-t);position:absolute;left:0;top:100%;color:var(--accent)}
 .nav a:hover span{transform:translateY(-100%)}
-@media (max-width:760px){.nav a:not(:last-child){display:none}}
+.nav .lang{color:var(--ink-dim)}
+@media (max-width:980px){.nav a:not(.keep){display:none}}
 
 .draft-tag{position:fixed;left:var(--gutter);bottom:18px;z-index:60;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--night);background:var(--accent);padding:6px 10px;border-radius:2px}
 
 /* ---------- hero ---------- */
-.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--gutter) clamp(28px,6vh,64px)}
-#sky{position:absolute;inset:0;width:100%;height:100%}
-.hero__glow{position:absolute;inset:auto -20% -40% -20%;height:70%;background:radial-gradient(ellipse at 50% 100%, rgba(255,91,38,.28), rgba(127,180,255,.08) 45%, transparent 70%);pointer-events:none}
-.constellation{position:absolute;right:4vw;top:9vh;width:min(34vw,440px);height:auto;opacity:.95;pointer-events:none}
-.constellation line{stroke:var(--accent-2);stroke-width:1;stroke-opacity:.55}
+.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--gutter) clamp(28px,6vh,64px)}
+.hero__photo{position:absolute;inset:0;overflow:hidden}
+.hero__photo img{width:100%;height:100%;object-fit:cover;object-position:58% 60%;will-change:transform}
+.hero__shade{position:absolute;inset:0;background:
+  linear-gradient(180deg, rgba(6,11,24,.92) 0%, rgba(6,11,24,.25) 38%, rgba(6,11,24,.35) 60%, rgba(6,11,24,.96) 100%),
+  linear-gradient(90deg, rgba(6,11,24,.75) 0%, transparent 55%)}
+#sky{position:absolute;inset:0 0 45% 0;width:100%;height:55%;mix-blend-mode:screen}
+.constellation{position:absolute;right:4vw;top:11vh;width:min(26vw,330px);height:auto;pointer-events:none}
+.constellation line{stroke:var(--accent);stroke-width:1;stroke-opacity:.6}
 .constellation circle{fill:var(--ink)}
-.constellation text{fill:var(--ink-dim);font-family:var(--mono);font-size:9px;letter-spacing:.15em}
+.constellation text{fill:var(--ink-dim);font-family:var(--mono);font-size:10px;letter-spacing:.15em}
 .hero__title{position:relative;font-size:clamp(34px, 10.2vw, 200px)}
-.hero__title .accent{color:var(--accent)}
 .hero__row{position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:clamp(18px,3vh,32px);flex-wrap:wrap}
-.hero__sub{max-width:420px;color:var(--ink-dim);font-size:clamp(15px,1.3vw,18px)}
+.hero__sub{max-width:460px;color:#B9C4DB;font-size:clamp(15px,1.25vw,18px)}
 .hero__sub strong{color:var(--ink);font-weight:500}
 .scrollcue{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);display:flex;align-items:center;gap:12px}
 .scrollcue i{display:block;width:1px;height:48px;background:linear-gradient(var(--accent),transparent);animation:cue 1.8s ease-in-out infinite;transform-origin:top}
 @keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
-.flyby{position:absolute;left:0;top:30%;width:100%;height:60px;pointer-events:none}
 
 /* ---------- marquee ---------- */
 .marquee{position:relative;border-block:1px solid var(--line);padding:22px 0;overflow:hidden;background:var(--night)}
 .marquee__track{display:flex;width:max-content;will-change:transform}
-.marquee__group{display:flex;align-items:center;gap:40px;padding-right:40px;font-size:clamp(32px,5vw,72px);white-space:nowrap}
+.marquee__group{display:flex;align-items:center;gap:40px;padding-right:40px;font-size:clamp(30px,4.6vw,68px);white-space:nowrap}
 .marquee__group .display{line-height:1}
 .marquee__group .out{color:transparent;-webkit-text-stroke:1px var(--ink)}
-.marquee__group svg{width:.6em;height:.6em;flex:none}
+.marquee__group svg{width:.75em;height:.4em;flex:none}
 
-/* ---------- compañía ---------- */
+/* ---------- quiénes somos ---------- */
 .about{padding:clamp(90px,16vh,180px) var(--gutter);display:grid;grid-template-columns:1fr 3fr;gap:clamp(24px,5vw,80px)}
-.about__text{font-family:var(--display);font-stretch:100%;font-weight:500;font-size:clamp(26px,3.6vw,56px);line-height:1.12;letter-spacing:-.015em}
-.about__text .word{opacity:.14;transition:none}
+.about__text{font-family:var(--display);font-stretch:100%;font-weight:500;font-size:clamp(25px,3.3vw,52px);line-height:1.14;letter-spacing:-.015em}
+.about__text .word{opacity:.14}
 .about__text em{font-style:normal;color:var(--accent)}
+.about__more{grid-column:2;display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,48px);color:var(--ink-dim);max-width:900px}
 .stats{grid-column:1 / -1;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);margin-top:clamp(40px,8vh,90px)}
 .stat{padding:28px 20px 0 0}
 .stat + .stat{padding-left:20px;border-left:1px solid var(--line)}
-.stat b{display:block;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(40px,5.6vw,92px);line-height:1}
+.stat b{display:block;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(36px,5vw,84px);line-height:1;white-space:nowrap}
+.stat b small{font-size:.45em;margin-left:.1em}
 .stat > span{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim)}
-@media (max-width:860px){.about{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0;padding-left:0}}
+@media (max-width:860px){.about{grid-template-columns:1fr}.about__more{grid-column:1;grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0;padding-left:0}.stat{padding-bottom:20px}}
 
-/* ---------- vuelo (servicios) ---------- */
-.flight{position:relative;height:420vh}
+/* ---------- certificaciones ---------- */
+.certs{padding:clamp(60px,10vh,120px) var(--gutter) clamp(90px,16vh,180px)}
+.certs__head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(30px,6vh,64px)}
+.certs__head h2{font-size:clamp(40px,7vw,120px)}
+.certs__head p{max-width:380px;color:var(--ink-dim)}
+.cert{position:relative;display:grid;grid-template-columns:80px 1.2fr 1fr;align-items:center;gap:20px;padding:clamp(18px,2.6vw,30px) 0;overflow:hidden}
+.cert::before{content:"";position:absolute;inset:0;background:var(--brand-navy);transform:scaleY(0);transform-origin:bottom;transition:transform .5s cubic-bezier(.7,0,.2,1);z-index:-1}
+.cert:hover::before{transform:scaleY(1)}
+.cert__line{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);transform-origin:left}
+.cert__n{font-family:var(--mono);font-size:12px;color:var(--accent);padding-left:12px}
+.cert__t{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,3vw,46px);line-height:1}
+.cert__d{color:var(--ink-dim);font-size:14px;padding-right:12px}
+.cert:hover .cert__d{color:var(--ink)}
+.cert > *{position:relative}
+@media (max-width:760px){.cert{grid-template-columns:44px 1fr}.cert__d{grid-column:2}}
+
+/* ---------- servicios: plan de vuelo ---------- */
+.flight{position:relative;height:520vh}
 .flight__sticky{position:sticky;top:0;height:100svh;overflow:hidden;background:
-  radial-gradient(1200px 600px at 80% 0%, rgba(127,180,255,.10), transparent 60%),
+  radial-gradient(1200px 600px at 80% 0%, rgba(124,188,212,.12), transparent 60%),
   linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%)}
-.flight__grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px, transparent 1px),linear-gradient(90deg,var(--line) 1px, transparent 1px);background-size:80px 80px;opacity:.35;mask-image:radial-gradient(ellipse at center, #000 30%, transparent 75%)}
+.flight__grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px, transparent 1px),linear-gradient(90deg,var(--line) 1px, transparent 1px);background-size:80px 80px;opacity:.35;mask-image:radial-gradient(ellipse at center, #000 30%, transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center, #000 30%, transparent 75%)}
 .flight svg.route{position:absolute;inset:0;width:100%;height:100%}
 .route__ghost{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:4 8}
 .route__trail{fill:none;stroke:var(--accent);stroke-width:2.5}
-.flight__head{position:absolute;left:var(--gutter);top:clamp(80px,12vh,120px)}
+.flight__head{position:absolute;left:var(--gutter);top:clamp(84px,13vh,130px)}
 .flight__head h2{font-size:clamp(40px,6.4vw,110px);margin-top:14px}
-.hud{position:absolute;right:var(--gutter);top:clamp(80px,12vh,120px);font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--ink-dim);display:grid;grid-template-columns:auto auto;gap:6px 18px;text-align:right}
+.hud{position:absolute;right:var(--gutter);top:clamp(84px,13vh,130px);font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--ink-dim);display:grid;grid-template-columns:auto auto;gap:6px 18px;text-align:right}
 .hud b{color:var(--ink);font-weight:500}
-.steps{position:absolute;left:var(--gutter);bottom:clamp(28px,8vh,80px);width:min(560px,calc(100% - 2*var(--gutter)))}
+.steps{position:absolute;left:var(--gutter);bottom:clamp(40px,9vh,90px);width:min(580px,calc(100% - 2*var(--gutter)))}
 .step{position:absolute;left:0;bottom:0;width:100%;opacity:0;transform:translateY(30px)}
-.step .num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.18em}
-.step h3{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(28px,3.4vw,52px);line-height:.95;margin:10px 0 12px}
-.step p{color:var(--ink-dim);max-width:460px}
-.progress{position:absolute;left:var(--gutter);right:var(--gutter);bottom:18px;height:1px;background:var(--line)}
+.step .num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.18em;text-transform:uppercase}
+.step h3{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(28px,3.4vw,54px);line-height:.95;margin:10px 0 12px}
+.step p{color:#B9C4DB;max-width:500px}
+.progress{position:absolute;left:var(--gutter);right:var(--gutter);bottom:22px;height:1px;background:var(--line)}
 .progress i{position:absolute;inset:0;background:var(--accent);transform-origin:left;transform:scaleX(0)}
+.progress span{position:absolute;top:-4px;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:var(--night-2);border:1px solid var(--ink-dim);transition:background .3s,border-color .3s}
+.progress span.on{background:var(--accent);border-color:var(--accent)}
+
+/* ---------- destinos ---------- */
+.dest{position:relative;padding:clamp(90px,16vh,180px) var(--gutter);display:grid;grid-template-columns:1fr 1.6fr;gap:clamp(24px,5vw,80px);align-items:center}
+.dest h2{font-size:clamp(40px,6.4vw,110px);margin:14px 0 22px}
+.dest p{color:var(--ink-dim);max-width:380px}
+.dest__base{margin-top:28px;display:flex;gap:28px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim)}
+.dest__base b{display:block;color:var(--ink);font-family:var(--display);font-stretch:125%;font-size:28px;letter-spacing:0}
+.dest__map{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:1900/1322;clip-path:circle(0% at 52% 46%)}
+.dest__map img{width:100%;height:100%;object-fit:cover;filter:saturate(.9)}
+.dest__radar{position:absolute;left:52%;top:46%;width:160%;aspect-ratio:1;transform:translate(-50%,-50%);background:conic-gradient(from 0deg, rgba(38,74,130,.0) 0deg, rgba(38,74,130,.0) 300deg, rgba(38,74,130,.45) 360deg);border-radius:50%;animation:radar 5s linear infinite;mix-blend-mode:multiply;pointer-events:none}
+@keyframes radar{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.dest__ping{position:absolute;left:52%;top:46%;width:14px;height:14px;margin:-7px;border-radius:50%;background:#E0332F}
+.dest__ping::before,.dest__ping::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #E0332F;animation:ping 2.4s ease-out infinite}
+.dest__ping::after{animation-delay:1.2s}
+@keyframes ping{from{transform:scale(1);opacity:1}to{transform:scale(6);opacity:0}}
+@media (max-width:860px){.dest{grid-template-columns:1fr}}
 
 /* ---------- flota ---------- */
 .fleet{position:relative}
 .fleet__sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center}
 .fleet__track{display:flex;height:100%;will-change:transform}
-.panel{flex:none;width:100vw;height:100%;position:relative;display:flex;flex-direction:column;justify-content:center;padding:clamp(80px,12vh,120px) var(--gutter) clamp(40px,8vh,80px)}
-.panel--intro h2{font-size:clamp(64px,16vw,280px)}
-.panel--intro p{max-width:420px;color:var(--ink-dim);margin-top:24px}
-.plane-art{width:min(980px,82vw);height:auto;margin:0 auto}
-.pa-body{fill:var(--pa-body,#E9EEF8)}
-.pa-shade{fill:var(--pa-shade,#C3CCDF)}
-.pa-stripe{fill:var(--pa-stripe,#FF5B26)}
-.pa-dark{fill:var(--pa-dark,#0B1226)}
-.pa-eng{fill:var(--pa-eng,#AEB9D0)}
-.panel--next .plane-art{--pa-body:none;--pa-shade:none;--pa-stripe:none;--pa-dark:none;--pa-eng:none;stroke:var(--ink-dim);stroke-width:1.2;stroke-dasharray:6 6}
-.plane-meta{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-top:clamp(20px,5vh,56px)}
-.plane-meta h3{font-size:clamp(40px,6vw,104px)}
-.specs{display:grid;grid-template-columns:repeat(3,auto);gap:8px 40px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim)}
-.specs b{display:block;color:var(--ink);font-family:var(--display);font-stretch:125%;font-size:clamp(20px,2vw,30px);letter-spacing:0;margin-top:4px}
-.panel .tag{position:absolute;top:clamp(80px,12vh,120px);left:var(--gutter)}
+.panel{flex:none;width:100vw;height:100%;position:relative;display:flex;flex-direction:column;justify-content:center;padding:clamp(90px,13vh,130px) var(--gutter) clamp(50px,9vh,90px)}
+.panel--intro h2{font-size:clamp(64px,15vw,260px)}
+.panel--intro p{max-width:520px;color:var(--ink-dim);margin-top:24px}
+.panel--intro p strong{color:var(--ink);font-weight:500}
+.panel--757{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,64px);align-items:center}
+.pic{position:relative;overflow:hidden;border-radius:6px}
+.pic img{width:100%;height:100%;object-fit:cover;will-change:transform}
+.panel--757 .pic{aspect-ratio:16/10.5}
+.panel--757 h3{font-size:clamp(40px,5vw,88px)}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:18px 32px;margin-top:clamp(20px,4vh,40px)}
+.specs div{border-top:1px solid var(--line);padding-top:10px}
+.specs dt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim)}
+.specs dd{font-family:var(--display);font-stretch:125%;font-weight:700;font-size:clamp(20px,1.9vw,30px);line-height:1.1;margin-top:4px;white-space:nowrap}
+.specs dd small{font-size:.55em;color:var(--ink-dim);margin-left:4px}
+.engines{margin-top:16px;color:var(--ink-dim);font-size:13px}
+.btn{display:inline-flex;align-items:center;gap:12px;margin-top:22px;padding:14px 22px;border:1px solid var(--accent);border-radius:999px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);position:relative;overflow:hidden;transition:color .4s}
+.btn::before{content:"";position:absolute;inset:0;background:var(--accent);transform:translateY(101%);transition:transform .45s cubic-bezier(.7,0,.2,1);z-index:-1}
+.btn:hover{color:var(--night)}.btn:hover::before{transform:none}
+.panel--history{display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(24px,4vw,64px);align-items:center}
+.panel--history h3{font-size:clamp(36px,4.4vw,76px)}
+.panel--history p{color:var(--ink-dim);margin-top:18px;max-width:440px}
+.types{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.types span{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+.history__pics{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;height:min(66vh,560px)}
+.history__pics .pic:first-child{grid-row:1 / span 2}
+.history__pics figcaption{position:absolute;left:12px;bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.plane-art{width:min(900px,80vw);height:auto;margin:0 auto;fill:none;stroke:var(--ink-dim);stroke-width:1.2;stroke-dasharray:6 6}
+.panel--next h3{font-size:clamp(40px,6vw,104px);margin-top:clamp(20px,5vh,50px)}
+.panel--next p{color:var(--ink-dim);max-width:420px;margin-top:14px}
 .speedlines{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.speedlines i{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(234,240,255,.5),transparent)}
+.speedlines i{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(234,240,255,.45),transparent)}
 @media (max-width:899px){
   .fleet__sticky{position:relative;height:auto}
   .fleet__track{flex-direction:column}
-  .panel{width:100%;min-height:80svh}
-  .specs{grid-template-columns:repeat(2,auto)}
+  .panel{width:100%;min-height:auto;padding-top:80px;padding-bottom:40px}
+  .panel--757,.panel--history{grid-template-columns:1fr}
+  .history__pics{height:auto;grid-template-rows:200px 200px}
 }
 
 /* ---------- galería ---------- */
 .gallery{padding:clamp(90px,16vh,180px) var(--gutter);display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(12px,2vw,28px)}
 .gallery__head{grid-column:1 / -1;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(24px,6vh,60px)}
 .gallery__head h2{font-size:clamp(44px,7vw,120px)}
-.gallery__head p{max-width:360px;color:var(--ink-dim)}
-.tile{position:relative;overflow:hidden;border-radius:4px;clip-path:inset(100% 0 0 0)}
-.tile__img{position:absolute;inset:-15% 0;will-change:transform}
-.tile__label{position:absolute;left:16px;bottom:14px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.gallery__head p{max-width:340px;color:var(--ink-dim);font-size:13px}
+.tile{position:relative;overflow:hidden;border-radius:6px;clip-path:inset(100% 0 0 0)}
+.tile img{position:absolute;left:0;top:-12%;width:100%;height:124%;object-fit:cover;will-change:transform}
 .t1{grid-column:1 / span 7;aspect-ratio:16/10}
 .t2{grid-column:8 / span 5;aspect-ratio:4/5;margin-top:18vh}
-.t3{grid-column:2 / span 5;aspect-ratio:1/1;margin-top:-10vh}
-.t4{grid-column:8 / span 4;aspect-ratio:4/3;margin-top:6vh}
-.ph1{background:radial-gradient(circle at 70% 30%, #ffb07a 0, #ff5b26 18%, #3a1a3a 55%, #0b1226 100%)}
-.ph2{background:linear-gradient(180deg,#9cc4ff 0%,#3a63a8 45%,#0b1226 100%)}
-.ph3{background:radial-gradient(circle at 30% 70%, #f0f4ff 0, #7fb4ff 22%, #1a2a50 60%, #060914 100%)}
-.ph4{background:linear-gradient(135deg,#1d2b4f, #ff5b26 140%)}
-.tile__img svg{position:absolute;inset:0;width:100%;height:100%;opacity:.35}
-@media (max-width:760px){.t1,.t2,.t3,.t4{grid-column:1 / -1;margin-top:0}}
+.t3{grid-column:2 / span 5;aspect-ratio:4/3;margin-top:-12vh}
+.t4{grid-column:7 / span 5;aspect-ratio:3/2;margin-top:4vh}
+.t5{grid-column:3 / span 8;aspect-ratio:21/9;margin-top:6vh}
+@media (max-width:760px){.t1,.t2,.t3,.t4,.t5{grid-column:1 / -1;margin-top:0;aspect-ratio:3/2}}
+
+/* ---------- equipo ---------- */
+.team{padding:clamp(60px,10vh,120px) var(--gutter) clamp(90px,16vh,180px)}
+.team__head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(30px,6vh,64px)}
+.team__head h2{font-size:clamp(40px,7vw,120px)}
+.team__head p{color:var(--accent);font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.person{border-top:1px solid var(--line);cursor:pointer}
+.person:last-child{border-bottom:1px solid var(--line)}
+.person__row{display:grid;grid-template-columns:1.2fr 1fr 40px;gap:20px;align-items:center;padding:clamp(18px,2.4vw,28px) 0}
+.person__name{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2.8vw,44px);line-height:1;transition:color .3s,transform .5s cubic-bezier(.7,0,.2,1)}
+.person:hover .person__name{color:var(--accent);transform:translateX(14px)}
+.person__role{color:var(--ink-dim);font-size:14px}
+.person__plus{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;position:relative;transition:transform .5s,background .3s}
+.person__plus::before,.person__plus::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:1px;background:var(--ink);transform:translate(-50%,-50%)}
+.person__plus::after{transform:translate(-50%,-50%) rotate(90deg)}
+.person.open .person__plus{transform:rotate(45deg);background:var(--brand-navy)}
+.person__bio{height:0;overflow:hidden}
+.person__bio div{padding:0 0 28px;display:grid;grid-template-columns:1.2fr 1fr;gap:20px;color:#B9C4DB}
+.person__bio .years{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(40px,5vw,80px);line-height:1;color:var(--accent)}
+.person__bio .years small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);font-weight:400;margin-top:6px}
+@media (max-width:760px){.person__row{grid-template-columns:1fr 40px}.person__role{grid-column:1;grid-row:2}.person__plus{grid-row:1 / span 2;grid-column:2}.person__bio div{grid-template-columns:1fr}}
+
+/* ---------- medio ambiente ---------- */
+.eco{padding:clamp(40px,8vh,80px) var(--gutter);border-block:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:clamp(14px,2vw,28px);text-align:center}
+.eco svg{width:clamp(30px,3.6vw,52px);height:auto;flex:none}
+.eco p{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(20px,3.4vw,54px);line-height:1}
 
 /* ---------- contacto ---------- */
-.cta{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px var(--gutter);overflow:hidden}
+.cta{position:relative;padding:clamp(100px,16vh,180px) var(--gutter) clamp(80px,12vh,140px);overflow:hidden}
+.cta__top{text-align:center}
 .cta h2{font-size:clamp(30px,8.8vw,190px)}
-.cta p{color:var(--ink-dim);max-width:460px;margin:22px auto 40px}
-.magnet{position:relative;display:inline-grid;place-items:center;width:clamp(150px,16vw,200px);aspect-ratio:1;border-radius:50%;background:var(--accent);color:var(--night);font-family:var(--mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.cta__top p{color:var(--ink-dim);max-width:460px;margin:22px auto 40px}
+.magnet{position:relative;display:inline-grid;place-items:center;width:clamp(140px,14vw,190px);aspect-ratio:1;border-radius:50%;background:var(--accent);color:var(--night);font-family:var(--mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
 .magnet span{pointer-events:none}
-.contact-row{display:flex;gap:clamp(24px,5vw,80px);margin-top:60px;font-family:var(--mono);font-size:13px;letter-spacing:.08em;color:var(--ink-dim);flex-wrap:wrap;justify-content:center}
-.contact-row b{display:block;color:var(--ink);font-weight:500;margin-top:4px}
-.cta__runway{position:absolute;left:50%;bottom:0;width:2px;height:40vh;transform:translateX(-50%);background:repeating-linear-gradient(to top, var(--accent) 0 24px, transparent 24px 56px);opacity:.5;mask-image:linear-gradient(to top,#000,transparent)}
+.cta__grid{display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(30px,6vw,100px);margin-top:clamp(60px,10vh,110px);text-align:left}
+.cta__info div{border-top:1px solid var(--line);padding:16px 0 22px}
+.cta__info dt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim)}
+.cta__info dd{font-size:clamp(16px,1.5vw,20px);margin-top:6px}
+.cta__info a:hover{color:var(--accent)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:26px 24px}
+.field{position:relative}
+.field.full{grid-column:1 / -1}
+.field input,.field textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--ink);font:inherit;padding:22px 0 10px;outline:none;resize:none}
+.field label{position:absolute;left:0;top:22px;color:var(--ink-dim);pointer-events:none;transition:transform .3s, font-size .3s, color .3s;transform-origin:left}
+.field input:focus + label,.field input:not(:placeholder-shown) + label,.field textarea:focus + label,.field textarea:not(:placeholder-shown) + label{transform:translateY(-22px);font-size:12px;color:var(--accent)}
+.field i{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.7,0,.2,1)}
+.field input:focus ~ i,.field textarea:focus ~ i{transform:scaleX(1)}
+.check{grid-column:1 / -1;display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-dim)}
+.check a{text-decoration:underline}
+.form .btn{grid-column:1 / -1;justify-self:start;margin-top:0;background:none;cursor:pointer}
+@media (max-width:860px){.cta__grid{grid-template-columns:1fr}.form{grid-template-columns:1fr}}
 
 /* ---------- pie ---------- */
 .footer{border-top:1px solid var(--line);padding:40px var(--gutter) 24px;overflow:hidden}
@@ -186,13 +279,13 @@ svg{display:block}
 /* ---------- sin animaciones ---------- */
 @media (prefers-reduced-motion: reduce){
   .preloader{display:none}
-  .tile{clip-path:none}
+  .tile,.dest__map{clip-path:none}
   .about__text .word{opacity:1}
   .step{position:relative;opacity:1;transform:none;margin-top:28px}
   .flight{height:auto}
   .flight__sticky{position:relative;height:auto;padding:140px 0 80px}
   .steps{position:relative;left:auto;bottom:auto;padding:0 var(--gutter)}
-  .flight svg.route,.hud,.progress{display:none}
+  .flight svg.route,.hud,.progress,.dest__radar{display:none}
   .flight__head{position:relative;left:auto;top:auto;padding:0 var(--gutter)}
 }
 </style>
@@ -200,59 +293,47 @@ svg{display:block}
 <body>
 
 <div class="preloader" aria-hidden="true">
-  <div class="preloader__word display" data-split>Cygnus&nbsp;Air</div>
+  <div class="preloader__word display" data-split>Cygnus&nbsp;<span class="accent">Air</span></div>
   <div class="preloader__count"><span class="js-count">000</span> / 100</div>
   <div class="preloader__bar"></div>
 </div>
 <div class="cursor" aria-hidden="true"></div>
-<div class="draft-tag">Propuesta · textos e imágenes provisionales</div>
+<div class="draft-tag">Propuesta · textos de ygnusair.com</div>
 
 <header class="header">
-  <a href="#top" class="logo" aria-label="Cygnus Air, inicio">
-    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-      <path d="M20 3v34M6 25l14-8 14-9"/><circle cx="20" cy="3.5" r="2.2" fill="currentColor"/><circle cx="20" cy="17" r="2.2" fill="currentColor"/><circle cx="20" cy="36.5" r="2.2" fill="currentColor"/><circle cx="6" cy="25" r="1.8" fill="currentColor"/><circle cx="34" cy="8" r="1.8" fill="currentColor"/>
-    </svg>
-    CYGNUS AIR
-  </a>
+  <a href="#top" class="logo" aria-label="Corporación Cygnus Air, inicio"><img src="img/logo-claro.png" alt="Corporación Cygnus Air"></a>
   <nav class="nav" aria-label="Principal">
-    <a href="#compania" data-hover><span data-t="Compañía">Compañía</span></a>
+    <a href="#quienes" data-hover><span data-t="Quiénes somos">Quiénes somos</span></a>
+    <a href="#certificados" data-hover><span data-t="Certificados">Certificados</span></a>
     <a href="#servicios" data-hover><span data-t="Servicios">Servicios</span></a>
+    <a href="#destinos" data-hover><span data-t="Destinos">Destinos</span></a>
     <a href="#flota" data-hover><span data-t="Flota">Flota</span></a>
-    <a href="#contacto" data-hover><span data-t="Contacto">Contacto</span></a>
+    <a href="#equipo" data-hover><span data-t="Equipo">Equipo</span></a>
+    <a href="#contacto" class="keep" data-hover><span data-t="Contacto">Contacto</span></a>
+    <a href="#" class="keep lang" data-hover><span data-t="EN">ES / EN</span></a>
   </nav>
 </header>
 
 <main id="top">
 
-<!-- ================= HERO ================= -->
+<!-- ================= PORTADA ================= -->
 <section class="hero">
+  <div class="hero__photo"><img src="img/hero-757-noche.jpg" alt="Boeing 757 de Cygnus Air en plataforma de noche"></div>
+  <div class="hero__shade" aria-hidden="true"></div>
   <canvas id="sky" aria-hidden="true"></canvas>
-  <div class="hero__glow" aria-hidden="true"></div>
 
-  <!-- La constelación del Cisne (Cygnus) dibuja el logotipo en el cielo -->
+  <!-- La constelación del Cisne (Cygnus), el mismo animal que el logotipo -->
   <svg class="constellation" viewBox="0 0 420 420" aria-hidden="true">
     <g class="c-lines">
-      <line x1="210" y1="40"  x2="210" y2="165"/>
-      <line x1="210" y1="165" x2="210" y2="262"/>
-      <line x1="210" y1="262" x2="210" y2="380"/>
-      <line x1="210" y1="165" x2="122" y2="214"/>
-      <line x1="122" y1="214" x2="48"  y2="268"/>
-      <line x1="210" y1="165" x2="296" y2="128"/>
-      <line x1="296" y1="128" x2="360" y2="74"/>
+      <line x1="210" y1="40"  x2="210" y2="165"/><line x1="210" y1="165" x2="210" y2="262"/><line x1="210" y1="262" x2="210" y2="380"/>
+      <line x1="210" y1="165" x2="122" y2="214"/><line x1="122" y1="214" x2="48"  y2="268"/>
+      <line x1="210" y1="165" x2="296" y2="128"/><line x1="296" y1="128" x2="360" y2="74"/>
     </g>
     <g class="c-stars">
-      <circle cx="210" cy="40"  r="4.2"/><circle cx="210" cy="165" r="3.4"/><circle cx="210" cy="262" r="2.2"/>
-      <circle cx="210" cy="380" r="3"/><circle cx="122" cy="214" r="2.8"/><circle cx="48" cy="268" r="2.2"/>
-      <circle cx="296" cy="128" r="2.8"/><circle cx="360" cy="74" r="2"/>
+      <circle cx="210" cy="40" r="4.4"/><circle cx="210" cy="165" r="3.6"/><circle cx="210" cy="262" r="2.4"/><circle cx="210" cy="380" r="3.2"/>
+      <circle cx="122" cy="214" r="3"/><circle cx="48" cy="268" r="2.4"/><circle cx="296" cy="128" r="3"/><circle cx="360" cy="74" r="2.2"/>
     </g>
-    <g class="c-names">
-      <text x="222" y="44">DENEB</text><text x="222" y="169">SADR</text><text x="222" y="384">ALBIREO</text><text x="60" y="206">GIENAH</text>
-    </g>
-  </svg>
-
-  <svg class="flyby" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
-    <defs><linearGradient id="contrail" x1="0" x2="1"><stop offset="0" stop-color="#EAF0FF" stop-opacity="0"/><stop offset="1" stop-color="#EAF0FF" stop-opacity=".55"/></linearGradient></defs>
-    <rect class="flyby__trail" x="0" y="29" width="1440" height="1.2" fill="url(#contrail)" transform="scale(0 1)"/>
+    <g class="c-names"><text x="222" y="44">DENEB</text><text x="222" y="169">SADR</text><text x="222" y="384">ALBIREO</text><text x="52" y="204">GIENAH</text></g>
   </svg>
 
   <h1 class="hero__title display">
@@ -260,33 +341,53 @@ svg{display:block}
     <span class="line" data-split>en cada <span class="accent">vuelo.</span></span>
   </h1>
   <div class="hero__row">
-    <p class="hero__sub" data-fade><strong>Cygnus Air</strong> es un operador aéreo con experiencia en el sector de la aviación. Operamos con seguridad, puntualidad y un equipo que vive para volar.</p>
+    <p class="hero__sub" data-fade><strong>CygnusAir</strong> es un operador aéreo con una extensa experiencia en el sector de la aviación, y una de las primeras compañías cargueras aéreas españolas.</p>
     <div class="scrollcue" data-fade><i></i>Desliza para despegar</div>
   </div>
 </section>
 
-<!-- ================= MARQUEE ================= -->
+<!-- ================= CINTA ================= -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee__track">
     <div class="marquee__group">
-      <span class="display">Operador aéreo</span><svg viewBox="0 0 20 20"><path d="M10 0l2.5 7.5L20 10l-7.5 2.5L10 20l-2.5-7.5L0 10l7.5-2.5z" fill="#FF5B26"/></svg>
-      <span class="display out">Carga aérea</span><svg viewBox="0 0 20 20"><path d="M10 0l2.5 7.5L20 10l-7.5 2.5L10 20l-2.5-7.5L0 10l7.5-2.5z" fill="#FF5B26"/></svg>
-      <span class="display">Madrid</span><svg viewBox="0 0 20 20"><path d="M10 0l2.5 7.5L20 10l-7.5 2.5L10 20l-2.5-7.5L0 10l7.5-2.5z" fill="#FF5B26"/></svg>
-      <span class="display out">Seguridad</span><svg viewBox="0 0 20 20"><path d="M10 0l2.5 7.5L20 10l-7.5 2.5L10 20l-2.5-7.5L0 10l7.5-2.5z" fill="#FF5B26"/></svg>
+      <span class="display">Wet lease</span><svg viewBox="0 0 30 16"><path d="M0 9 L22 9 L30 5 L30 7 L24 11 L4 12 Z M10 9 L16 1 L19 1 L15 9 Z" fill="#7CBCD4"/></svg>
+      <span class="display out">ACMI</span><svg viewBox="0 0 30 16"><path d="M0 9 L22 9 L30 5 L30 7 L24 11 L4 12 Z M10 9 L16 1 L19 1 L15 9 Z" fill="#7CBCD4"/></svg>
+      <span class="display">Vuelos ad-hoc</span><svg viewBox="0 0 30 16"><path d="M0 9 L22 9 L30 5 L30 7 L24 11 L4 12 Z M10 9 L16 1 L19 1 L15 9 Z" fill="#7CBCD4"/></svg>
+      <span class="display out">CMI</span><svg viewBox="0 0 30 16"><path d="M0 9 L22 9 L30 5 L30 7 L24 11 L4 12 Z M10 9 L16 1 L19 1 L15 9 Z" fill="#7CBCD4"/></svg>
+      <span class="display">Cobertura AOC</span><svg viewBox="0 0 30 16"><path d="M0 9 L22 9 L30 5 L30 7 L24 11 L4 12 Z M10 9 L16 1 L19 1 L15 9 Z" fill="#7CBCD4"/></svg>
+      <span class="display out">FAR Part 129</span><svg viewBox="0 0 30 16"><path d="M0 9 L22 9 L30 5 L30 7 L24 11 L4 12 Z M10 9 L16 1 L19 1 L15 9 Z" fill="#7CBCD4"/></svg>
     </div>
   </div>
 </div>
 
-<!-- ================= COMPAÑÍA ================= -->
-<section class="about" id="compania">
-  <div class="eyebrow" data-fade>La compañía</div>
-  <p class="about__text" data-words>Desde hace décadas conectamos personas, empresas y mercancías. Somos un operador aéreo nacido de la pasión por la aviación: <em>cada vuelo</em> se planifica al milímetro, se opera con rigor y se cierra solo cuando todo ha llegado a su destino.</p>
-  <div class="stats">
-    <div class="stat"><b><span data-count="30">0</span>+</b><span>Años volando</span></div>
-    <div class="stat"><b><span data-count="24">0</span>/7</b><span>Operación</span></div>
-    <div class="stat"><b><span data-count="100">0</span>%</b><span>Compromiso</span></div>
-    <div class="stat"><b><span data-count="5">0</span></b><span>Aviones</span></div>
+<!-- ================= QUIÉNES SOMOS ================= -->
+<section class="about" id="quienes">
+  <div class="eyebrow" data-fade>Quiénes somos</div>
+  <p class="about__text" data-words>Operamos aviones cargueros con nuestro propio <em>Certificado de Operador Aéreo</em>, emitido por AESA, y con la licencia FAR Part 129 para volar hacia y desde Estados Unidos. Todo bajo las máximas condiciones de seguridad y los más altos estándares de calidad.</p>
+  <div class="about__more">
+    <p data-fade>Nuestra actividad principal es la operación de aeronaves cargueras mediante contratos de leasing, como el Wet Lease, o mediante vuelos chárter según la demanda del transporte de mercancías.</p>
+    <p data-fade>CygnusAir nació en 1994 como Regional Líneas Aéreas, la primera compañía española dedicada a la aviación regional. Hoy forma parte del Grupo Swiftair y se dedica exclusivamente a vuelos regulares de carga y vuelos ‘on demand’ para importantes empresas del transporte aéreo de mercancías.</p>
   </div>
+  <div class="stats">
+    <div class="stat"><b><span data-count="1994" data-nogroup>0</span></b><span>Año de fundación</span></div>
+    <div class="stat"><b>A2</b><span>Tipo de AOC · AESA</span></div>
+    <div class="stat"><b><span data-count="239">0</span><small>m³</small></b><span>Carga por avión</span></div>
+    <div class="stat"><b><span data-count="129">0</span></b><span>FAR Part · EE. UU.</span></div>
+  </div>
+</section>
+
+<!-- ================= CERTIFICACIONES ================= -->
+<section class="certs" id="certificados">
+  <div class="certs__head">
+    <h2 class="display" data-split-scroll>Certificaciones</h2>
+    <p data-fade>Las licencias que nos permiten operar en cualquier parte del mundo, cubriendo cualquier línea de conexión.</p>
+  </div>
+  <div class="cert" data-hover><span class="cert__n">01</span><span class="cert__t">A.O.C</span><span class="cert__d">Certificado de Operador Aéreo · Tipo A2</span><i class="cert__line"></i></div>
+  <div class="cert" data-hover><span class="cert__n">02</span><span class="cert__t">FAR Part 129</span><span class="cert__d">Operación a y dentro de Estados Unidos para operadores extranjeros</span><i class="cert__line"></i></div>
+  <div class="cert" data-hover><span class="cert__n">03</span><span class="cert__t">CAT II/III · LVTO</span><span class="cert__d">Aproximaciones y despegues con baja visibilidad</span><i class="cert__line"></i></div>
+  <div class="cert" data-hover><span class="cert__n">04</span><span class="cert__t">Mercancías peligrosas</span><span class="cert__d">Transporte de mercancías peligrosas</span><i class="cert__line"></i></div>
+  <div class="cert" data-hover><span class="cert__n">05</span><span class="cert__t">RVSM · MNPS</span><span class="cert__d">Separación vertical mínima reducida y especificaciones de navegación del Atlántico Norte</span><i class="cert__line"></i></div>
+  <div class="cert" data-hover><span class="cert__n">06</span><span class="cert__t">RNAV1 · RNAV5 · RNP APP</span><span class="cert__d">Navegación de área y aproximaciones RNP</span><i class="cert__line"></i></div>
 </section>
 
 <!-- ================= SERVICIOS: un vuelo que avanza con el scroll ================= -->
@@ -294,17 +395,14 @@ svg{display:block}
   <div class="flight__sticky">
     <div class="flight__grid" aria-hidden="true"></div>
     <svg class="route" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <path id="route" class="route__ghost" d="M-80 760 C 180 760 300 720 430 600 S 700 250 920 270 S 1180 470 1300 330 S 1450 120 1560 110"/>
-      <path class="route__trail" d="M-80 760 C 180 760 300 720 430 600 S 700 250 920 270 S 1180 470 1300 330 S 1450 120 1560 110"/>
-      <g id="jet">
-        <g transform="translate(-26 -26) scale(1.3)">
-          <path d="M40 20 C40 18.6 38.6 18 36 18 L26 18 L16 5 L12 5 L18 18 L8 18 L4 12 L1 12 L3 20 L1 28 L4 28 L8 22 L18 22 L12 35 L16 35 L26 22 L36 22 C38.6 22 40 21.4 40 20 Z" fill="#EAF0FF"/>
-        </g>
-      </g>
+      <path id="route" class="route__ghost" d="M-80 770 C 180 770 300 730 430 610 S 700 250 920 270 S 1180 470 1300 330 S 1450 120 1560 110"/>
+      <path class="route__trail" d="M-80 770 C 180 770 300 730 430 610 S 700 250 920 270 S 1180 470 1300 330 S 1450 120 1560 110"/>
+      <g id="jet"><g transform="translate(-26 -26) scale(1.3)">
+        <path d="M40 20 C40 18.6 38.6 18 36 18 L26 18 L16 5 L12 5 L18 18 L8 18 L4 12 L1 12 L3 20 L1 28 L4 28 L8 22 L18 22 L12 35 L16 35 L26 22 L36 22 C38.6 22 40 21.4 40 20 Z" fill="#EAF0FF"/>
+      </g></g>
     </svg>
-
     <div class="flight__head">
-      <div class="eyebrow">Servicios</div>
+      <div class="eyebrow">Nuestros servicios</div>
       <h2 class="display" data-split-scroll>Plan de vuelo</h2>
     </div>
     <div class="hud" aria-hidden="true">
@@ -312,43 +410,44 @@ svg{display:block}
       <span>GS</span><b class="js-spd">000 KT</b>
       <span>HDG</span><b class="js-hdg">090°</b>
     </div>
-
     <div class="steps">
-      <article class="step"><div class="num">01 · Despegue</div><h3>Vuelos de carga</h3><p>Transportamos mercancía general y urgente con aviones dedicados y tripulaciones propias. Texto provisional: aquí irá la descripción real del servicio.</p></article>
-      <article class="step"><div class="num">02 · Ascenso</div><h3>Vuelos chárter</h3><p>Operaciones a medida para clientes que necesitan una ruta, un horario o una capacidad concretos.</p></article>
-      <article class="step"><div class="num">03 · Crucero</div><h3>ACMI · Wet lease</h3><p>Avión, tripulación, mantenimiento y seguro para que otros operadores amplíen su capacidad sin invertir en flota.</p></article>
-      <article class="step"><div class="num">04 · Aterrizaje</div><h3>Mercancías especiales</h3><p>Perecederos, mercancías peligrosas y envíos que requieren un trato específico, con todos los permisos en regla.</p></article>
+      <article class="step"><div class="num">01 · Embarque</div><h3>Wet Lease · ACMI</h3><p>Arrendamiento de nuestras aeronaves con avión, tripulación, mantenimiento y seguro. Toda la operación recae sobre CygnusAir; el cliente comercializa los vuelos.</p></article>
+      <article class="step"><div class="num">02 · Despegue</div><h3>Vuelos ad-hoc</h3><p>Vuelos de carga ‘on demand’ a cualquier parte del mundo según la disponibilidad de la flota, estudiando siempre la ruta óptima. En condiciones ACMI o ‘full charter’.</p></article>
+      <article class="step"><div class="num">03 · Crucero</div><h3>CMI</h3><p>Tripulaciones (Crew), mantenimiento (Maintenance) y seguro (Insurance) para que nuestros clientes entren en el transporte aéreo con agilidad, sin preocuparse de las áreas más costosas.</p></article>
+      <article class="step"><div class="num">04 · Aproximación</div><h3>Cobertura AOC</h3><p>Operamos bajo nuestro AOC cualquier aeronave que cumpla los requisitos de seguridad: abre el mercado europeo a compañías de fuera de la UE y permite a las nuevas aerolíneas empezar a volar mientras tramitan su propio certificado.</p></article>
+      <article class="step"><div class="num">05 · Aterrizaje</div><h3>Asesoramiento</h3><p>La amplia experiencia de nuestro personal al servicio del cliente, con altos parámetros de calidad y buscando siempre la mejor solución.</p></article>
     </div>
-    <div class="progress" aria-hidden="true"><i></i></div>
+    <div class="progress" aria-hidden="true"><i></i><span style="left:0%"></span><span style="left:25%"></span><span style="left:50%"></span><span style="left:75%"></span><span style="left:100%"></span></div>
+  </div>
+</section>
+
+<!-- ================= DESTINOS ================= -->
+<section class="dest" id="destinos">
+  <div>
+    <div class="eyebrow" data-fade>Nuestros destinos</div>
+    <h2 class="display" data-split-scroll>Destinos</h2>
+    <p data-fade>Destinos de carga operados actualmente, desde nuestra base en Madrid hacia Europa, África y América.</p>
+    <div class="dest__base" data-fade><span>Base<b>MAD</b></span><span>Indicativo<b>CYGNUS</b></span><span>OACI<b>RGN</b></span></div>
+  </div>
+  <div class="dest__map">
+    <img src="img/destinos.jpg" alt="Mapa con los destinos de carga que opera Cygnus Air">
+    <div class="dest__radar" aria-hidden="true"></div>
+    <div class="dest__ping" aria-hidden="true"></div>
   </div>
 </section>
 
 <!-- ================= FLOTA: desplazamiento horizontal ================= -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="b757" viewBox="0 0 1000 260">
-    <!-- estabilizador horizontal lejano -->
-    <path class="pa-shade" d="M845 150 L965 138 L972 146 L860 162 Z"/>
-    <!-- deriva -->
-    <path class="pa-body" d="M780 112 L888 18 Q896 12 906 12 L936 12 L900 112 Z"/>
-    <path class="pa-stripe" d="M882 24 L936 12 L920 56 L860 64 Z"/>
-    <!-- fuselaje -->
-    <path class="pa-body" d="M48 148 C48 126 70 112 112 110 L790 110 C840 110 900 104 948 92 L956 104 C916 136 864 168 800 172 L112 176 C70 176 48 166 48 148 Z"/>
-    <path class="pa-shade" d="M60 160 C80 172 96 176 112 176 L800 172 C850 169 896 150 930 128 L930 136 C890 160 850 176 800 178 L112 180 C86 180 66 172 60 160 Z"/>
-    <!-- línea de color -->
-    <path class="pa-stripe" d="M70 150 L900 132 L896 140 L74 158 Z"/>
-    <!-- cabina -->
-    <path class="pa-dark" d="M74 128 L94 120 L120 119 L114 131 L80 134 Z"/>
-    <!-- puerta de carga principal -->
-    <rect class="pa-shade" x="190" y="116" width="90" height="34" rx="3"/>
-    <!-- ala -->
-    <path class="pa-shade" d="M370 156 L560 166 L640 196 L612 198 L390 176 Z"/>
-    <!-- motor -->
-    <rect class="pa-eng" x="372" y="170" width="118" height="36" rx="18"/>
-    <rect class="pa-dark" x="372" y="174" width="14" height="28" rx="6"/>
-    <path class="pa-shade" d="M478 172 L500 178 L500 198 L478 204 Z"/>
-    <!-- tren -->
-    <rect class="pa-dark" x="128" y="176" width="6" height="40"/><circle class="pa-dark" cx="131" cy="222" r="10"/>
-    <rect class="pa-dark" x="528" y="176" width="8" height="42"/><circle class="pa-dark" cx="522" cy="224" r="11"/><circle class="pa-dark" cx="544" cy="224" r="11"/>
+    <path d="M845 150 L965 138 L972 146 L860 162 Z"/>
+    <path d="M780 112 L888 18 Q896 12 906 12 L936 12 L900 112 Z"/>
+    <path d="M48 148 C48 126 70 112 112 110 L790 110 C840 110 900 104 948 92 L956 104 C916 136 864 168 800 172 L112 176 C70 176 48 166 48 148 Z"/>
+    <path d="M74 128 L94 120 L120 119 L114 131 L80 134 Z"/>
+    <rect x="190" y="116" width="90" height="34" rx="3"/>
+    <path d="M370 156 L560 166 L640 196 L612 198 L390 176 Z"/>
+    <rect x="372" y="170" width="118" height="36" rx="18"/>
+    <rect x="128" y="176" width="6" height="40"/><circle cx="131" cy="222" r="10"/>
+    <rect x="528" y="176" width="8" height="42"/><circle cx="522" cy="224" r="11"/><circle cx="544" cy="224" r="11"/>
   </symbol>
 </svg>
 
@@ -356,46 +455,51 @@ svg{display:block}
   <div class="fleet__sticky">
     <div class="fleet__track">
       <div class="panel panel--intro">
-        <div class="eyebrow">Flota</div>
+        <div class="eyebrow">Nuestra flota</div>
         <h2 class="display" data-split-scroll>La flota</h2>
-        <p>Cada avión tiene su ficha. Cuando llegue uno nuevo, se añade desde el panel de WordPress y aparece aquí solo, con su animación.</p>
+        <p>CygnusAir opera en la actualidad con <strong>Boeing 757-200PCF</strong>: un excelente rendimiento en el corto alcance, capaz de cubrir largas distancias de la manera más óptima, económica y eficaz.</p>
       </div>
 
-      <div class="panel panel--plane">
+      <div class="panel panel--757">
         <div class="speedlines" aria-hidden="true"></div>
-        <div class="eyebrow tag">Avión 01</div>
-        <svg class="plane-art" viewBox="0 0 1000 260" role="img" aria-label="Ilustración de un Boeing 757 carguero"><use href="#b757"/></svg>
-        <div class="plane-meta">
-          <h3 class="display">Boeing<br>757-200F</h3>
-          <div class="specs">
-            <span>Carga útil<b>— t</b></span>
-            <span>Alcance<b>— km</b></span>
-            <span>Matrícula<b>EC-···</b></span>
-          </div>
+        <div class="pic"><img src="img/757-aterrizando.jpg" alt="Boeing 757-200PCF de Cygnus Air aterrizando"></div>
+        <div>
+          <div class="eyebrow">Flota actual</div>
+          <h3 class="display" style="margin-top:14px">Boeing<br>757-200PCF</h3>
+          <dl class="specs">
+            <div><dt>Capacidad de carga</dt><dd><span data-count="239">0</span><small>m³</small></dd></div>
+            <div><dt>Peso máx. al despegue</dt><dd><span data-count="99779">0</span><small>kg</small></dd></div>
+            <div><dt>Longitud</dt><dd><span data-count="47.32" data-dec="2">0</span><small>m</small></dd></div>
+            <div><dt>Envergadura</dt><dd><span data-count="38.05" data-dec="2">0</span><small>m</small></dd></div>
+            <div><dt>Velocidad de crucero</dt><dd><span data-count="868">0</span><small>km/h</small></dd></div>
+            <div><dt>Alcance</dt><dd>4.500–<span data-count="5000">0</span><small>km</small></dd></div>
+            <div><dt>Altura</dt><dd><span data-count="13.56" data-dec="2">0</span><small>m</small></dd></div>
+            <div><dt>Techo de vuelo</dt><dd><span data-count="12500">0</span><small>m</small></dd></div>
+          </dl>
+          <p class="engines">Planta motriz: 2× Rolls-Royce RB211-535E4 o Pratt &amp; Whitney PW2037 / PW2040 / PW2043 · Peso vacío 58.390 kg</p>
+          <a class="btn" href="https://www.ygnusair.com/cms/wp-content/uploads/2021/06/B757-200F-SPECS-2.pdf" target="_blank" rel="noopener" data-hover>Descargar ficha B757-200PCF ↓</a>
         </div>
       </div>
 
-      <div class="panel panel--plane">
-        <div class="speedlines" aria-hidden="true"></div>
-        <div class="eyebrow tag">Avión 02</div>
-        <svg class="plane-art" viewBox="0 0 1000 260" role="img" aria-label="Ilustración de un avión de la flota"><use href="#b757"/></svg>
-        <div class="plane-meta">
-          <h3 class="display">Modelo<br>del avión</h3>
-          <div class="specs">
-            <span>Carga útil<b>— t</b></span>
-            <span>Alcance<b>— km</b></span>
-            <span>Matrícula<b>EC-···</b></span>
-          </div>
+      <div class="panel panel--history">
+        <div>
+          <div class="eyebrow">Historia</div>
+          <h3 class="display" style="margin-top:14px">Desde nuestros comienzos</h3>
+          <p>CygnusAir ha operado con diversas aeronaves de transporte y carga: Airbus 340 y Boeing 757 en rutas de pasaje con Iberia, y vuelos chárter ejecutivos con Embraer 135, Falcon 20 y Hawker 700.</p>
+          <div class="types"><span>Airbus 340</span><span>Boeing 757</span><span>DC-8-62F</span><span>Embraer 135</span><span>Falcon 20</span><span>Hawker 700</span></div>
+        </div>
+        <div class="history__pics">
+          <figure class="pic"><img src="img/dc8.jpg" alt="McDonnell Douglas DC-8-62F de Cygnus Air"><figcaption>DC-8-62F</figcaption></figure>
+          <figure class="pic"><img src="img/embraer135.jpg" alt="Embraer 135"><figcaption>Embraer 135</figcaption></figure>
+          <figure class="pic"><img src="img/falcon20.jpg" alt="Dassault Falcon 20"><figcaption>Falcon 20</figcaption></figure>
         </div>
       </div>
 
-      <div class="panel panel--plane panel--next">
-        <div class="eyebrow tag">Próximamente</div>
-        <svg class="plane-art" viewBox="0 0 1000 260" role="img" aria-label="Silueta del próximo avión"><use href="#b757"/></svg>
-        <div class="plane-meta">
-          <h3 class="display">El próximo<br>avión</h3>
-          <p style="max-width:360px;color:var(--ink-dim)">Hueco reservado para la siguiente incorporación.</p>
-        </div>
+      <div class="panel panel--next">
+        <div class="eyebrow">Próximamente</div>
+        <svg class="plane-art" viewBox="0 0 1000 260" aria-hidden="true"><use href="#b757"/></svg>
+        <h3 class="display">El próximo<br>avión</h3>
+        <p>Cuando llegue un avión nuevo, se añade desde el panel de WordPress y aparece aquí con su ficha y su animación.</p>
       </div>
     </div>
   </div>
@@ -404,26 +508,66 @@ svg{display:block}
 <!-- ================= GALERÍA ================= -->
 <section class="gallery">
   <div class="gallery__head">
-    <h2 class="display" data-split-scroll>En pista</h2>
-    <p data-fade>Las fotos se descubren como una cortina y se mueven a distinta velocidad que la página. Aquí irán las fotos reales de los aviones, el hangar y el equipo.</p>
+    <h2 class="display" data-split-scroll>Galería</h2>
+    <p data-fade>Todas las fotos propiedad de sus respectivos autores.</p>
   </div>
-  <figure class="tile t1"><div class="tile__img ph1"><svg viewBox="0 0 1000 260" preserveAspectRatio="xMidYMid meet"><use href="#b757"/></svg></div><figcaption class="tile__label">Foto · Avión al atardecer</figcaption></figure>
-  <figure class="tile t2"><div class="tile__img ph2"></div><figcaption class="tile__label">Foto · Tripulación</figcaption></figure>
-  <figure class="tile t3"><div class="tile__img ph3"></div><figcaption class="tile__label">Foto · Hangar</figcaption></figure>
-  <figure class="tile t4"><div class="tile__img ph4"></div><figcaption class="tile__label">Foto · Carga</figcaption></figure>
+  <figure class="tile t1"><img src="img/757-pista.jpg" alt="Boeing 757 de Cygnus Air en pista"></figure>
+  <figure class="tile t2"><img src="img/757-arranque.jpg" alt="Boeing 757 de Cygnus Air en plataforma"></figure>
+  <figure class="tile t3"><img src="img/757-cielo.jpg" alt="Boeing 757 de Cygnus Air en vuelo"></figure>
+  <figure class="tile t4"><img src="img/757-mar.jpg" alt="Boeing 757 de Cygnus Air sobre el mar"></figure>
+  <figure class="tile t5"><img src="img/757-costa.jpg" alt="Boeing 757 de Cygnus Air aproximándose"></figure>
 </section>
+
+<!-- ================= EQUIPO ================= -->
+<section class="team" id="equipo">
+  <div class="team__head">
+    <h2 class="display" data-split-scroll>Nuestro equipo</h2>
+    <p data-fade>Experiencia, profesionalidad y flexibilidad</p>
+  </div>
+  <div class="person">
+    <div class="person__row"><span class="person__name">David Martínez</span><span class="person__role">Director General</span><span class="person__plus"></span></div>
+    <div class="person__bio"><div><span class="years">15+<small>años en aviación</small></span><p>Ha dirigido distintos departamentos de la compañía, adquiriendo un importante ‘know-how’ en gestión de aerolíneas, administración, operaciones en tierra, seguridad de la aviación, operaciones de vuelo, mantenimiento y monitorización de la calidad. Gestión Aeronáutica por la Universidad Autónoma de Madrid.</p></div></div>
+  </div>
+  <div class="person">
+    <div class="person__row"><span class="person__name">Aránzazu González</span><span class="person__role">Jefa del Departamento Financiero y Administración</span><span class="person__plus"></span></div>
+    <div class="person__bio"><div><span class="years">15+<small>años de experiencia</small></span><p>Directora Financiera de CygnusAir desde enero de 2006. Toda su trayectoria se ha desarrollado en el ámbito financiero del transporte aéreo, en aviación ejecutiva y comercial. Licenciada en Economía por la Universidad Complutense de Madrid.</p></div></div>
+  </div>
+  <div class="person">
+    <div class="person__row"><span class="person__name">Fernando García</span><span class="person__role">Jefe del Departamento de Operaciones</span><span class="person__plus"></span></div>
+    <div class="person__bio"><div><span class="years">18.000<small>horas de vuelo</small></span><p>Más de 30 años en aviación. Responsable de todas las operaciones, el despacho de vuelo y el control de actividad de las tripulaciones; además, comandante, instructor y examinador de vuelo. Ha volado DC-9, B737 y B757 y fue Técnico Experto en operaciones de vuelo en AESA.</p></div></div>
+  </div>
+  <div class="person">
+    <div class="person__row"><span class="person__name">José Manuel Jiménez</span><span class="person__role">Director Técnico · Centro EASA Part-145 · CAMO</span><span class="person__plus"></span></div>
+    <div class="person__bio"><div><span class="years">30+<small>años en aviación</small></span><p>Ingeniero Aeronáutico por la Universidad Politécnica de Madrid y MBA especializado en aviación por IESE. Fue Inspector Jefe de Seguridad en vuelo en AESA y tiene una amplia trayectoria en mantenimiento e ingeniería con A320, A330, A340, B757 y B767.</p></div></div>
+  </div>
+</section>
+
+<div class="eco">
+  <svg viewBox="0 0 40 40" fill="none" stroke="#7CBCD4" stroke-width="1.8" aria-hidden="true"><path d="M8 32C8 16 18 8 34 6c-1 16-9 26-24 26z"/><path d="M8 32 24 16"/></svg>
+  <p data-split-scroll>Comprometidos con el medio ambiente</p>
+</div>
 
 <!-- ================= CONTACTO ================= -->
 <section class="cta" id="contacto">
-  <div class="cta__runway" aria-hidden="true"></div>
-  <div class="eyebrow" data-fade>Contacto</div>
-  <h2 class="display" data-split-scroll>¿Despegamos?</h2>
-  <p data-fade>Cuéntanos qué necesitas mover y te respondemos con un plan de vuelo.</p>
-  <a class="magnet" href="mailto:info@ejemplo.com" data-hover><span>Escríbenos</span></a>
-  <div class="contact-row" data-fade>
-    <span>Teléfono<b>+34 000 000 000</b></span>
-    <span>Email<b>info@ejemplo.com</b></span>
-    <span>Base<b>Madrid · España</b></span>
+  <div class="cta__top">
+    <div class="eyebrow" style="justify-content:center" data-fade>Contacto</div>
+    <h2 class="display" data-split-scroll>¿Despegamos?</h2>
+    <p data-fade>Cuéntenos qué necesita mover y le preparamos el plan de vuelo.</p>
+    <a class="magnet" href="mailto:info@ygnusair.com" data-hover><span>Escríbanos</span></a>
+  </div>
+  <div class="cta__grid">
+    <dl class="cta__info" data-fade>
+      <div><dt>Oficinas centrales</dt><dd>Avenida de Suiza, 18-20<br>Edificio JAS, 1ª planta<br>28821 Coslada · Madrid · España</dd></div>
+      <div><dt>Teléfono</dt><dd><a href="tel:+34917461530">+34 917 461 530</a></dd></div>
+      <div><dt>Email</dt><dd><a href="mailto:info@ygnusair.com">info@ygnusair.com</a></dd></div>
+    </dl>
+    <form class="form" data-fade onsubmit="event.preventDefault()">
+      <div class="field"><input id="f-n" placeholder=" " autocomplete="name"><label for="f-n">Nombre</label><i></i></div>
+      <div class="field"><input id="f-e" type="email" placeholder=" " autocomplete="email"><label for="f-e">Correo electrónico</label><i></i></div>
+      <div class="field full"><textarea id="f-m" rows="4" placeholder=" "></textarea><label for="f-m">Mensaje</label><i></i></div>
+      <label class="check"><input type="checkbox"> <span>He leído y acepto la <a href="#">política de privacidad</a>.</span></label>
+      <button class="btn" type="submit" data-hover>Enviar mensaje →</button>
+    </form>
   </div>
 </section>
 
@@ -432,8 +576,8 @@ svg{display:block}
 <footer class="footer">
   <div class="footer__big display" data-split-scroll>Cygnus Air</div>
   <div class="footer__row">
-    <span>© Cygnus Air</span>
-    <span><a href="#">Aviso legal</a> · <a href="#">Privacidad</a> · <a href="#">Cookies</a></span>
+    <span>© 2026 Cygnus Air · Grupo Swiftair</span>
+    <span><a href="#">Aviso legal</a> · <a href="#">Política de privacidad</a> · <a href="#">Política de cookies</a></span>
     <a href="#top" data-hover>Volver arriba ↑</a>
   </div>
 </footer>
@@ -448,69 +592,51 @@ svg{display:block}
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-  /* ---------- partir texto en letras (respeta etiquetas internas) ---------- */
-  function split(el) {
-    const walk = node => {
-      [...node.childNodes].forEach(n => {
-        if (n.nodeType === 3) {
-          const frag = document.createDocumentFragment();
-          n.textContent.split(/(\s+)/).forEach(part => {
-            if (!part) return;
-            if (/^\s+$/.test(part)) { frag.append(document.createTextNode(' ')); return; }
-            const w = document.createElement('span'); w.className = 'w';
-            [...part].forEach(ch => { const c = document.createElement('span'); c.className = 'c'; c.textContent = ch; w.append(c); });
-            frag.append(w);
-          });
-          n.replaceWith(frag);
-        } else if (n.nodeType === 1) walk(n);
-      });
-    };
+  /* ---------- partir texto en letras o palabras (respeta etiquetas internas) ---------- */
+  function splitInto(el, mode) {
+    const walk = node => [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.append(document.createTextNode(' ')); return; }
+          const w = document.createElement('span');
+          if (mode === 'words') { w.className = 'word'; w.textContent = part; }
+          else { w.className = 'w'; [...part].forEach(ch => { const c = document.createElement('span'); c.className = 'c'; c.textContent = ch; w.append(c); }); }
+          frag.append(w);
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1) walk(n);
+    });
     walk(el);
-    return $$('.c', el);
+    return $$(mode === 'words' ? '.word' : '.c', el);
   }
-  function splitWords(el) {
-    const walk = node => {
-      [...node.childNodes].forEach(n => {
-        if (n.nodeType === 3) {
-          const frag = document.createDocumentFragment();
-          n.textContent.split(/(\s+)/).forEach(part => {
-            if (!part) return;
-            if (/^\s+$/.test(part)) { frag.append(document.createTextNode(' ')); return; }
-            const w = document.createElement('span'); w.className = 'word'; w.textContent = part; frag.append(w);
-          });
-          n.replaceWith(frag);
-        } else if (n.nodeType === 1) walk(n);
-      });
-    };
-    walk(el); return $$('.word', el);
-  }
+  const split = el => splitInto(el, 'chars');
 
-  /* ---------- cielo estrellado ---------- */
+  /* ---------- cielo estrellado sobre la foto ---------- */
   const sky = $('#sky'), ctx = sky.getContext('2d');
-  let stars = [], W = 0, H = 0, mx = 0, my = 0, scrollY = 0;
+  let stars = [], W = 0, H = 0, mx = 0, my = 0, scrollY = 0, shoot = null;
   function resize() {
     const dpr = Math.min(devicePixelRatio || 1, 2);
     W = sky.clientWidth; H = sky.clientHeight;
     sky.width = W * dpr; sky.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const n = Math.round(W * H / 3200);
-    stars = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + .2, d: Math.random() * .9 + .1, p: Math.random() * 6.28 }));
+    stars = Array.from({ length: Math.round(W * H / 2600) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.1 + .2, d: Math.random() * .9 + .1, p: Math.random() * 6.28 }));
   }
   resize(); addEventListener('resize', resize);
   addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
-  let shoot = null;
   function drawSky(t) {
     ctx.clearRect(0, 0, W, H);
     for (const s of stars) {
       const tw = reduce ? .8 : .55 + .45 * Math.sin(t / 900 * s.d + s.p);
       const x = s.x - mx * 30 * s.d, y = s.y - my * 30 * s.d - scrollY * .25 * s.d;
-      ctx.globalAlpha = tw * s.d; ctx.fillStyle = '#EAF0FF';
+      ctx.globalAlpha = tw * s.d * (1 - (((y % H) + H) % H) / H * .6); ctx.fillStyle = '#EAF0FF';
       ctx.beginPath(); ctx.arc(x, ((y % H) + H) % H, s.r, 0, 6.283); ctx.fill();
     }
     if (!reduce) {
-      if (!shoot && Math.random() < .004) shoot = { x: Math.random() * W * .7, y: Math.random() * H * .4, l: 0 };
+      if (!shoot && Math.random() < .004) shoot = { x: Math.random() * W * .7, y: Math.random() * H * .5, l: 0 };
       if (shoot) {
         shoot.l += 14; const g = ctx.createLinearGradient(shoot.x, shoot.y, shoot.x + shoot.l, shoot.y + shoot.l * .35);
-        g.addColorStop(0, 'rgba(234,240,255,0)'); g.addColorStop(1, 'rgba(234,240,255,.8)');
+        g.addColorStop(0, 'rgba(234,240,255,0)'); g.addColorStop(1, 'rgba(234,240,255,.85)');
         ctx.globalAlpha = Math.max(0, 1 - shoot.l / 420); ctx.strokeStyle = g; ctx.lineWidth = 1.2;
         ctx.beginPath(); ctx.moveTo(shoot.x, shoot.y); ctx.lineTo(shoot.x + shoot.l, shoot.y + shoot.l * .35); ctx.stroke();
         if (shoot.l > 420) shoot = null;
@@ -518,12 +644,22 @@ svg{display:block}
     }
     ctx.globalAlpha = 1;
   }
-  if (reduce) { drawSky(0); }
 
-  /* ---------- sin animaciones: dejarlo todo visible ---------- */
+  /* ---------- acordeón del equipo (funciona también sin animaciones) ---------- */
+  $$('.person').forEach(p => p.addEventListener('click', () => {
+    const open = !p.classList.contains('open'), bio = $('.person__bio', p);
+    p.classList.toggle('open', open);
+    if (window.gsap && !reduce) gsap.to(bio, { height: open ? 'auto' : 0, duration: .7, ease: 'expo.inOut' });
+    else bio.style.height = open ? 'auto' : '0';
+  }));
+
+  /* ---------- cabecera con fondo al bajar ---------- */
+  const header = $('.header');
+  addEventListener('scroll', () => header.classList.toggle('is-scrolled', window.scrollY > 40), { passive: true });
+
   if (reduce || !window.gsap) {
+    drawSky(0);
     $('.preloader') && $('.preloader').remove();
-    $$('.c-lines line').forEach(l => l.style.strokeOpacity = .55);
     return;
   }
 
@@ -537,11 +673,11 @@ svg{display:block}
   gsap.ticker.add(t => { lenis.raf(t * 1000); drawSky(t * 1000); });
   gsap.ticker.lagSmoothing(0);
   $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
-    const id = a.getAttribute('href'); if (id.length < 2) return;
-    e.preventDefault(); lenis.scrollTo(id === '#top' ? 0 : id, { duration: 1.6 });
+    const id = a.getAttribute('href'); if (id.length < 2 && id !== '#top') return;
+    e.preventDefault(); lenis.scrollTo(id === '#top' ? 0 : id, { duration: 1.6, offset: id === '#servicios' || id === '#flota' ? 0 : -60 });
   }));
 
-  /* ---------- cursor y botones magnéticos ---------- */
+  /* ---------- cursor y botón magnético ---------- */
   const cur = $('.cursor');
   const cx = gsap.quickTo(cur, 'x', { duration: .35, ease: 'power3' }), cy = gsap.quickTo(cur, 'y', { duration: .35, ease: 'power3' });
   addEventListener('pointermove', e => { cur.style.opacity = 1; cx(e.clientX); cy(e.clientY); });
@@ -552,150 +688,157 @@ svg{display:block}
     m.addEventListener('pointerleave', () => { xTo(0); yTo(0); });
   });
 
-  /* ---------- preparar textos ---------- */
+  /* ---------- preparar la entrada ---------- */
   const preChars = split($('.preloader__word'));
   const heroLines = $$('.hero__title .line').map(split);
   gsap.set(preChars, { yPercent: 110 });
   gsap.set(heroLines.flat(), { yPercent: 110 });
   gsap.set('[data-fade]', { autoAlpha: 0, y: 24 });
+  gsap.set('.hero__photo img', { scale: 1.3, autoAlpha: 0 });
   const cLines = $$('.c-lines line');
   cLines.forEach(l => { const len = Math.hypot(l.x2.baseVal.value - l.x1.baseVal.value, l.y2.baseVal.value - l.y1.baseVal.value); gsap.set(l, { strokeDasharray: len, strokeDashoffset: len }); });
   gsap.set('.c-stars circle', { scale: 0, transformOrigin: '50% 50%' });
   gsap.set('.c-names text', { autoAlpha: 0 });
 
-  /* ---------- preloader + entrada ---------- */
   const counter = { v: 0 };
-  const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
-  intro
+  gsap.timeline({ defaults: { ease: 'expo.out' } })
     .to(preChars, { yPercent: 0, duration: 1, stagger: .045 })
     .to(counter, { v: 100, duration: 1.4, ease: 'power2.inOut', onUpdate: () => $('.js-count').textContent = String(Math.round(counter.v)).padStart(3, '0') }, 0)
     .to('.preloader__bar', { scaleX: 1, duration: 1.4, ease: 'power2.inOut' }, 0)
     .to(preChars, { yPercent: -110, duration: .7, stagger: .02, ease: 'expo.in' }, 1.55)
     .to('.preloader', { yPercent: -100, duration: 1.1, ease: 'expo.inOut' }, 2.05)
-    .add('hero', 2.6)
-    .to(heroLines[0], { yPercent: 0, duration: 1.3, stagger: .03 }, 'hero')
-    .to(heroLines[1], { yPercent: 0, duration: 1.3, stagger: .03 }, 'hero+=.15')
-    .to('.c-stars circle', { scale: 1, duration: .8, stagger: .08, ease: 'back.out(3)' }, 'hero')
-    .to(cLines, { strokeDashoffset: 0, duration: 1.2, stagger: .12, ease: 'power2.inOut' }, 'hero+=.3')
-    .to('.c-names text', { autoAlpha: 1, duration: .8, stagger: .1 }, 'hero+=1.2')
-    .to('.hero [data-fade]', { autoAlpha: 1, y: 0, duration: 1, stagger: .1 }, 'hero+=.6')
-    .add(() => { lenis.start(); $('.preloader').remove(); flyby(); });
+    .add('hero', 2.45)
+    .to('.hero__photo img', { scale: 1.06, autoAlpha: 1, duration: 2.4, ease: 'expo.out' }, 'hero')
+    .to(heroLines[0], { yPercent: 0, duration: 1.3, stagger: .03 }, 'hero+=.2')
+    .to(heroLines[1], { yPercent: 0, duration: 1.3, stagger: .03 }, 'hero+=.35')
+    .to('.c-stars circle', { scale: 1, duration: .8, stagger: .08, ease: 'back.out(3)' }, 'hero+=.4')
+    .to(cLines, { strokeDashoffset: 0, duration: 1.2, stagger: .12, ease: 'power2.inOut' }, 'hero+=.7')
+    .to('.c-names text', { autoAlpha: 1, duration: .8, stagger: .1 }, 'hero+=1.6')
+    .to('.hero [data-fade]', { autoAlpha: 1, y: 0, duration: 1, stagger: .1 }, 'hero+=.8')
+    .add(() => { lenis.start(); $('.preloader').remove(); });
 
-  // avión que cruza el cielo del hero con su estela
-  function flyby() {
-    const trail = $('.flyby__trail');
-    const run = () => gsap.timeline()
-      .fromTo(trail, { attr: { transform: 'scale(0 1)' } }, { attr: { transform: 'scale(1 1)' }, duration: 6, ease: 'none' })
-      .to(trail, { opacity: 0, duration: 2 }, '>-0.5')
-      .set(trail, { opacity: 1, attr: { transform: 'scale(0 1)' } })
-      .add(() => gsap.delayedCall(4, run));
-    run();
-  }
+  // al bajar: la foto se hunde, el titular se separa y la constelación gira
+  const heroST = { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true };
+  gsap.to('.hero__photo', { yPercent: 22, ease: 'none', scrollTrigger: heroST });
+  gsap.to('.hero__title .line:first-child', { xPercent: -12, ease: 'none', scrollTrigger: heroST });
+  gsap.to('.hero__title .line:last-of-type', { xPercent: 10, ease: 'none', scrollTrigger: heroST });
+  gsap.to('.constellation', { yPercent: 30, rotate: -12, ease: 'none', scrollTrigger: heroST });
 
-  // el titular se separa al hacer scroll
-  gsap.to('.hero__title .line:first-child', { xPercent: -12, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-  gsap.to('.hero__title .line:last-of-type', { xPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-  gsap.to('.constellation', { yPercent: 30, rotate: -12, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-
-  /* ---------- marquee que acelera con la velocidad del scroll ---------- */
+  /* ---------- cinta que acelera con la velocidad del scroll ---------- */
   const track = $('.marquee__track'), group = $('.marquee__group');
-  for (let i = 0; i < 3; i++) track.append(group.cloneNode(true));
+  for (let i = 0; i < 2; i++) track.append(group.cloneNode(true));
   let mxPos = 0, skew = 0;
   gsap.ticker.add(() => {
     const gw = group.offsetWidth;
     mxPos -= 1.2 + Math.abs(velocity) * .6;
     if (mxPos <= -gw) mxPos += gw;
-    skew += ((gsap.utils.clamp(-12, 12, velocity * -.8)) - skew) * .1;
+    skew += (gsap.utils.clamp(-12, 12, velocity * -.8) - skew) * .1;
     track.style.transform = `translate3d(${mxPos}px,0,0) skewX(${skew}deg)`;
   });
 
-  /* ---------- títulos que entran letra a letra al aparecer ---------- */
+  /* ---------- títulos letra a letra y textos que aparecen ---------- */
   $$('[data-split-scroll]').forEach(el => {
     const chars = split(el);
-    gsap.from(chars, { yPercent: 110, rotate: 6, duration: 1.1, ease: 'expo.out', stagger: .035, scrollTrigger: { trigger: el, start: 'top 85%' } });
+    gsap.from(chars, { yPercent: 110, rotate: 6, duration: 1.1, ease: 'expo.out', stagger: .03, scrollTrigger: { trigger: el, start: 'top 88%' } });
   });
-  $$('section [data-fade]').forEach(el => {
+  $$('[data-fade]').forEach(el => {
     if (el.closest('.hero')) return;
-    gsap.to(el, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
+    gsap.to(el, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 90%' } });
   });
 
   /* ---------- párrafo que se ilumina palabra a palabra ---------- */
-  const words = splitWords($('[data-words]'));
-  gsap.to(words, { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: '.about__text', start: 'top 80%', end: 'bottom 45%', scrub: true } });
+  gsap.to(splitInto($('[data-words]'), 'words'), { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: '.about__text', start: 'top 80%', end: 'bottom 45%', scrub: true } });
 
-  /* ---------- contadores ---------- */
-  $$('[data-count]').forEach(el => {
-    const o = { v: 0 };
-    gsap.to(o, { v: +el.dataset.count, duration: 2, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%' }, onUpdate: () => el.textContent = Math.round(o.v) });
+  /* ---------- contadores (formato español) ---------- */
+  const fmt = (v, dec, nogroup) => nogroup ? String(Math.round(v)) : v.toLocaleString('es-ES', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  const countUp = (el, opts = {}) => {
+    const o = { v: 0 }, dec = +(el.dataset.dec || 0), nog = 'nogroup' in el.dataset;
+    return gsap.to(o, { v: +el.dataset.count, duration: 2, ease: 'power3.out', ...opts, onUpdate: () => el.textContent = fmt(o.v, dec, nog) });
+  };
+  $$('.stats [data-count]').forEach(el => countUp(el, { scrollTrigger: { trigger: el, start: 'top 92%' } }));
+
+  /* ---------- certificaciones ---------- */
+  $$('.cert').forEach(c => {
+    const tl = gsap.timeline({ scrollTrigger: { trigger: c, start: 'top 90%' } });
+    tl.from($('.cert__line', c), { scaleX: 0, duration: 1.2, ease: 'expo.inOut' })
+      .from([...c.children].filter(x => !x.matches('.cert__line')), { yPercent: 100, autoAlpha: 0, duration: .9, stagger: .08, ease: 'expo.out' }, .2);
   });
 
   /* ---------- plan de vuelo ---------- */
   const trailPath = $('.route__trail'), len = trailPath.getTotalLength();
   gsap.set(trailPath, { strokeDasharray: len, strokeDashoffset: len });
-  const steps = $$('.step');
+  const steps = $$('.step'), dots = $$('.progress span'), N = steps.length;
   const alt = $('.js-alt'), spd = $('.js-spd'), hdg = $('.js-hdg');
   let active = -1;
   const showStep = i => {
     if (i === active) return;
     if (active > -1) gsap.to(steps[active], { autoAlpha: 0, y: -30, duration: .5, ease: 'power3.in' });
     gsap.fromTo(steps[i], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: .8, delay: .2, ease: 'expo.out' });
+    dots.forEach((d, k) => d.classList.toggle('on', k <= i));
     active = i;
   };
-  const flightTl = gsap.timeline({
+  gsap.timeline({
     scrollTrigger: {
       trigger: '.flight', start: 'top top', end: 'bottom bottom', scrub: 1,
       onUpdate: self => {
         const p = self.progress;
-        showStep(Math.min(3, Math.floor(p * 4)));
+        showStep(Math.min(N - 1, Math.floor(p * N)));
         const a = p < .2 ? p / .2 : p > .85 ? (1 - p) / .15 : 1;
         alt.textContent = String(Math.round(a * 35000)).padStart(5, '0').replace(/(\d{2})(\d{3})/, '$1 $2') + ' FT';
-        spd.textContent = String(Math.round(140 + a * 340)).padStart(3, '0') + ' KT';
+        spd.textContent = String(Math.round(140 + a * 330)).padStart(3, '0') + ' KT';
         hdg.textContent = String(Math.round(80 + Math.sin(p * 9) * 25)).padStart(3, '0') + '°';
       }
     }
-  });
-  flightTl
+  })
     .to('#jet', { motionPath: { path: '#route', align: '#route', alignOrigin: [.5, .5], autoRotate: true }, ease: 'none', duration: 1 }, 0)
     .to(trailPath, { strokeDashoffset: 0, ease: 'none', duration: 1 }, 0)
     .to('.progress i', { scaleX: 1, ease: 'none', duration: 1 }, 0)
     .to('.flight__grid', { backgroundPosition: '-800px 400px', ease: 'none', duration: 1 }, 0);
   showStep(0);
 
+  /* ---------- destinos: el mapa se abre desde Madrid ---------- */
+  gsap.to('.dest__map', { clipPath: 'circle(75% at 52% 46%)', ease: 'none', scrollTrigger: { trigger: '.dest', start: 'top 75%', end: 'center 55%', scrub: 1 } });
+  gsap.fromTo('.dest__map img', { scale: 1.25 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '.dest', start: 'top bottom', end: 'bottom top', scrub: true } });
+
   /* ---------- flota en horizontal (escritorio) ---------- */
   const mm = gsap.matchMedia();
+  const specsIn = (trigger, extra) => $$('.specs [data-count]').forEach((el, i) => countUp(el, { delay: i * .05, scrollTrigger: { trigger, start: 'left 70%', ...extra } }));
   mm.add('(min-width: 900px)', () => {
     const fleet = $('.fleet'), ftrack = $('.fleet__track');
     const dist = () => ftrack.scrollWidth - innerWidth;
     const setH = () => fleet.style.height = (dist() + innerHeight) + 'px';
     setH(); ScrollTrigger.addEventListener('refreshInit', setH);
     const tween = gsap.to(ftrack, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: fleet, start: 'top top', end: () => '+=' + dist(), scrub: true, invalidateOnRefresh: true } });
-    // cada avión entra "aterrizando" en su panel
-    $$('.panel--plane').forEach(p => {
-      gsap.fromTo($('.plane-art', p), { xPercent: 45, yPercent: -22, rotate: -5 }, { xPercent: -45, yPercent: 10, rotate: 3, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
-      gsap.from($$('.plane-meta > *', p), { y: 60, autoAlpha: 0, stagger: .1, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left 60%' } });
+    $$('.fleet .pic').forEach(p => {
+      const panel = p.closest('.panel');
+      gsap.fromTo(p, { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', ease: 'none', scrollTrigger: { trigger: panel, containerAnimation: tween, start: 'left 85%', end: 'left 15%', scrub: true } });
+      gsap.fromTo($('img', p), { xPercent: 12, scale: 1.2 }, { xPercent: -6, scale: 1, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
     });
+    gsap.fromTo('.panel--next .plane-art', { xPercent: 45, yPercent: -22, rotate: -5 }, { xPercent: -30, yPercent: 8, rotate: 2, ease: 'none', scrollTrigger: { trigger: '.panel--next', containerAnimation: tween, start: 'left right', end: 'right right', scrub: true } });
+    $$('.panel--757 dl > div, .panel--757 .engines, .panel--757 .btn').forEach((el, i) => gsap.from(el, { y: 40, autoAlpha: 0, duration: .9, delay: i * .05, ease: 'expo.out', scrollTrigger: { trigger: '.panel--757', containerAnimation: tween, start: 'left 55%' } }));
+    specsIn('.panel--757', { containerAnimation: tween, start: 'left 55%' });
     return () => { fleet.style.height = ''; ScrollTrigger.removeEventListener('refreshInit', setH); };
   });
   mm.add('(max-width: 899px)', () => {
-    $$('.panel--plane .plane-art').forEach(a => gsap.fromTo(a, { xPercent: 30 }, { xPercent: -10, ease: 'none', scrollTrigger: { trigger: a, start: 'top bottom', end: 'bottom top', scrub: true } }));
+    $$('.specs [data-count]').forEach(el => countUp(el, { scrollTrigger: { trigger: el, start: 'top 92%' } }));
+    gsap.fromTo('.panel--next .plane-art', { xPercent: 30 }, { xPercent: -10, ease: 'none', scrollTrigger: { trigger: '.panel--next', start: 'top bottom', end: 'bottom top', scrub: true } });
   });
-  // líneas de velocidad
   $$('.speedlines').forEach(box => {
     for (let i = 0; i < 14; i++) {
       const l = document.createElement('i'); box.append(l);
-      gsap.set(l, { top: gsap.utils.random(10, 90) + '%', width: gsap.utils.random(80, 320) });
+      gsap.set(l, { top: gsap.utils.random(5, 95) + '%', width: gsap.utils.random(80, 320) });
       gsap.fromTo(l, { x: innerWidth * 1.1 }, { x: -400, duration: gsap.utils.random(.6, 1.4), repeat: -1, delay: gsap.utils.random(0, 2), ease: 'none' });
     }
   });
 
   /* ---------- galería: cortina + parallax ---------- */
-  $$('.tile').forEach((t, i) => {
-    gsap.to(t, { clipPath: 'inset(0% 0 0 0)', duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: t, start: 'top 85%' } });
-    gsap.fromTo($('.tile__img', t), { yPercent: -8, scale: 1.15 }, { yPercent: 8, scale: 1, ease: 'none', scrollTrigger: { trigger: t, start: 'top bottom', end: 'bottom top', scrub: true } });
+  $$('.tile').forEach(t => {
+    gsap.to(t, { clipPath: 'inset(0% 0 0 0)', duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: t, start: 'top 88%' } });
+    gsap.fromTo($('img', t), { yPercent: -6, scale: 1.12 }, { yPercent: 6, scale: 1, ease: 'none', scrollTrigger: { trigger: t, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
 
-  /* ---------- pista de aterrizaje en contacto ---------- */
-  gsap.fromTo('.cta__runway', { backgroundPositionY: '0px' }, { backgroundPositionY: '-560px', ease: 'none', scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: true } });
+  /* ---------- equipo: filas que entran ---------- */
+  gsap.from('.person', { y: 50, autoAlpha: 0, duration: 1, stagger: .1, ease: 'expo.out', scrollTrigger: { trigger: '.team', start: 'top 70%' } });
 
   addEventListener('load', () => ScrollTrigger.refresh());
   document.fonts && document.fonts.ready.then(() => ScrollTrigger.refresh());
