@@ -147,7 +147,7 @@ img,svg{display:block}
 .certs__head h2{font-size:clamp(40px,7vw,120px);margin-top:14px}
 .certs__head p{max-width:400px;color:var(--on-dark-dim)}
 .lics{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,24px);perspective:1200px}
-.lic{position:relative;display:flex;flex-direction:column;gap:14px;min-height:270px;padding:24px 24px 18px;border-radius:14px;border:1px solid var(--on-dark-line);
+.lic{position:relative;display:flex;flex-direction:column;gap:14px;padding:24px 24px 26px;border-radius:14px;border:1px solid var(--on-dark-line);
   background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%), rgba(124,188,212,.22), transparent 45%), rgba(255,255,255,.045);
   transform-style:preserve-3d;transition:border-color .4s, background-color .4s}
 .lic:hover{border-color:rgba(124,188,212,.6)}
@@ -156,7 +156,6 @@ img,svg{display:block}
 .lic__ico{width:46px;height:46px;color:var(--brand-sky);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transform:translateZ(30px)}
 .lic__t{font-family:var(--display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2.2vw,36px);line-height:.98;text-wrap:balance;transform:translateZ(20px)}
 .lic__d{color:var(--on-dark-dim);font-size:15px}
-.lic__foot{margin-top:auto;padding-top:14px;border-top:1px dashed var(--on-dark-line);display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-dim)}
 @media (max-width:980px){.lics{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:620px){.lics{grid-template-columns:1fr}.lic{min-height:0}}
 
@@ -591,42 +590,36 @@ html.legal-open, html.legal-open body{overflow:hidden}
       <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><path d="M23 4 L39 10 V21 C39 31 32 38 23 42 C14 38 7 31 7 21 V10 Z"/><path d="M15 23 l6 6 l11 -12"/></svg>
       <h3 class="lic__t">A.O.C</h3>
       <p class="lic__d">Certificado de Operador Aéreo · Tipo A2</p>
-      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
     </article>
     <article class="lic">
       <div class="lic__top"><span>Internacional</span><span class="lic__issuer">FAA · EE. UU.</span></div>
       <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="17"/><path d="M6 23h34M23 6c6 5 6 29 0 34M23 6c-6 5-6 29 0 34"/><path d="M10 14h26M10 32h26"/></svg>
       <h3 class="lic__t">FAR Part 129</h3>
       <p class="lic__d">Operación a y dentro de Estados Unidos para operadores extranjeros</p>
-      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
     </article>
     <article class="lic">
       <div class="lic__top"><span>Baja visibilidad</span><span class="lic__issuer">AESA</span></div>
       <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><path d="M14 42 L20 8 M32 42 L26 8"/><path d="M23 38v-4M23 28v-4M23 18v-3"/><path d="M4 16h10M32 16h10M6 24h8M34 24h8" stroke-dasharray="2 3"/></svg>
       <h3 class="lic__t">CAT II/III · LVTO</h3>
       <p class="lic__d">Aproximaciones y despegues con baja visibilidad</p>
-      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
     </article>
     <article class="lic">
       <div class="lic__top"><span>Carga</span><span class="lic__issuer">AESA</span></div>
       <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><path d="M23 3 L43 23 L23 43 L3 23 Z"/><path d="M23 14v13"/><circle cx="23" cy="32" r="1.2"/></svg>
       <h3 class="lic__t">Mercancías peligrosas</h3>
       <p class="lic__d">Transporte de mercancías peligrosas</p>
-      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
     </article>
     <article class="lic">
       <div class="lic__top"><span>Espacio aéreo</span><span class="lic__issuer">AESA</span></div>
       <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><path d="M5 11h36M5 23h36M5 35h36"/><path d="M15 15v4M15 27v4M31 15v4M31 27v4"/><path d="M12 18l3 3 3-3M28 30l3 3 3-3"/></svg>
       <h3 class="lic__t">RVSM · MNPS</h3>
       <p class="lic__d">Separación vertical mínima reducida y especificaciones de navegación del Atlántico Norte</p>
-      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
     </article>
     <article class="lic">
       <div class="lic__top"><span>Navegación</span><span class="lic__issuer">AESA</span></div>
       <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><circle cx="8" cy="34" r="3"/><circle cx="21" cy="14" r="3"/><circle cx="38" cy="26" r="3"/><path d="M10 31 L19 17 M24 16 L35 24"/><path d="M38 8v8M34 12h8"/></svg>
       <h3 class="lic__t">RNAV1 · RNAV5 · RNP APP</h3>
       <p class="lic__d">Navegación de área y aproximaciones RNP</p>
-      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
     </article>
   </div>
 </section>
