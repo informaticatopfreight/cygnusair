@@ -20,6 +20,11 @@
   --line:rgba(14,34,64,.13);
   --accent:var(--brand-navy);
   --on-accent:#FFFFFF;
+  --paper:#FFFFFF;
+  --deep:#0B1D38;                       /* banda oscura de certificaciones */
+  --on-dark:#FFFFFF;
+  --on-dark-dim:rgba(234,240,255,.72);
+  --on-dark-line:rgba(234,240,255,.16);
   --display:"Archivo", "Arial Narrow", system-ui, sans-serif;
   --body:"Inter", system-ui, -apple-system, Segoe UI, sans-serif;
   --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
@@ -124,22 +129,60 @@ img,svg{display:block}
 .stat > span{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim)}
 @media (max-width:860px){.about{grid-template-columns:1fr}.about__more{grid-column:1;grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0;padding-left:0}.stat{padding-bottom:20px}}
 
-/* ---------- certificaciones ---------- */
-.certs{padding:clamp(60px,10vh,120px) var(--gutter) clamp(90px,16vh,180px)}
-.certs__head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(30px,6vh,64px)}
-.certs__head h2{font-size:clamp(40px,7vw,120px)}
-.certs__head p{max-width:380px;color:var(--ink-dim)}
-.cert{position:relative;display:grid;grid-template-columns:80px 1.2fr 1fr;align-items:center;gap:20px;padding:clamp(18px,2.6vw,30px) 0;overflow:hidden}
-.cert::before{content:"";position:absolute;inset:0;background:var(--brand-navy);transform:scaleY(0);transform-origin:bottom;transition:transform .5s cubic-bezier(.7,0,.2,1);z-index:-1}
-.cert:hover::before{transform:scaleY(1)}
-.cert__line{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);transform-origin:left}
-.cert__n{font-family:var(--mono);font-size:12px;color:var(--accent);padding-left:12px}
-.cert__t{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,3vw,46px);line-height:1}
-.cert__d{color:var(--ink-dim);font-size:14px;padding-right:12px}
-.cert:hover .cert__t,.cert:hover .cert__n,.cert:hover .cert__d{color:var(--on-accent)}
-.cert__t,.cert__n,.cert__d{transition:color .3s}
-.cert > *{position:relative}
-@media (max-width:760px){.cert{grid-template-columns:44px 1fr}.cert__d{grid-column:2}}
+/* ---------- certificaciones: banda azul con tarjetas tipo licencia ---------- */
+.certs{position:relative;overflow:hidden;color:var(--on-dark);padding:clamp(90px,14vh,160px) var(--gutter);background:
+  radial-gradient(900px 500px at 85% 10%, rgba(124,188,212,.28), transparent 60%),
+  radial-gradient(700px 500px at 0% 100%, rgba(38,74,130,.9), transparent 70%),
+  var(--deep)}
+.certs__grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--on-dark-line) 1px, transparent 1px),linear-gradient(90deg,var(--on-dark-line) 1px, transparent 1px);background-size:80px 80px;opacity:.35;mask-image:radial-gradient(ellipse at 60% 40%, #000 20%, transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 60% 40%, #000 20%, transparent 70%)}
+.certs .eyebrow{color:var(--on-dark-dim)}
+.certs .eyebrow::before{background:var(--brand-sky)}
+.certs__head{position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(36px,7vh,70px)}
+.certs__head h2{font-size:clamp(40px,7vw,120px);margin-top:14px}
+.certs__head p{max-width:400px;color:var(--on-dark-dim)}
+.lics{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,24px);perspective:1200px}
+.lic{position:relative;display:flex;flex-direction:column;gap:14px;min-height:270px;padding:24px 24px 18px;border-radius:14px;border:1px solid var(--on-dark-line);
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%), rgba(124,188,212,.22), transparent 45%), rgba(255,255,255,.045);
+  transform-style:preserve-3d;transition:border-color .4s, background-color .4s}
+.lic:hover{border-color:rgba(124,188,212,.6)}
+.lic__top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-dim)}
+.lic__issuer{border:1px solid rgba(124,188,212,.5);border-radius:999px;padding:4px 10px;color:var(--brand-sky);white-space:nowrap}
+.lic__ico{width:46px;height:46px;color:var(--brand-sky);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transform:translateZ(30px)}
+.lic__t{font-family:var(--display);font-stretch:118%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2.2vw,36px);line-height:.98;text-wrap:balance;transform:translateZ(20px)}
+.lic__d{color:var(--on-dark-dim);font-size:15px}
+.lic__foot{margin-top:auto;padding-top:14px;border-top:1px dashed var(--on-dark-line);display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-dim)}
+@media (max-width:980px){.lics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.lics{grid-template-columns:1fr}.lic{min-height:0}}
+
+/* ---------- textos legales ---------- */
+html.legal-open, html.legal-open body{overflow:hidden}
+.legal{position:fixed;inset:0;z-index:80;overflow-y:auto;overscroll-behavior:contain;background:var(--night);color:var(--ink)}
+.legal__bar{position:sticky;top:0;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:calc(14px + env(safe-area-inset-top, 0px)) var(--gutter) 14px;background:rgba(245,248,252,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.legal__tabs{display:flex;gap:6px;flex-wrap:wrap}
+.legal__tabs a{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border-radius:999px;border:1px solid var(--line);color:var(--ink-dim)}
+.legal__tabs a.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.legal__close{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:none;border:1px solid var(--ink);color:var(--ink);border-radius:999px;padding:8px 16px;cursor:pointer}
+.legal__close:hover,.legal__close:focus-visible{background:var(--ink);color:var(--night)}
+.legal__doc{max-width:780px;margin:0 auto;padding:clamp(40px,8vh,80px) var(--gutter) 110px}
+.legal__doc h2{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(34px,5vw,64px);line-height:.95;margin:10px 0 28px;text-wrap:balance}
+.legal__doc h3{font-family:var(--display);font-stretch:110%;font-weight:700;font-size:clamp(18px,1.6vw,22px);color:var(--ink);margin:36px 0 10px}
+.legal__doc p,.legal__doc li{color:var(--ink-dim);font-size:16px;line-height:1.65;margin-bottom:12px;overflow-wrap:anywhere}
+.legal__doc ul{padding-left:20px}
+.legal__doc strong{color:var(--ink);font-weight:600}
+.legal__doc a{color:var(--accent);text-decoration:underline}
+.legal__doc .legal__kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin:0}
+.legal__card{border:1px solid var(--line);border-radius:10px;background:var(--paper);padding:4px 20px;margin:18px 0}
+.legal__card div{display:grid;grid-template-columns:180px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.legal__card div:last-child{border-bottom:0}
+.legal__card dt{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);padding-top:3px}
+.legal__card dd{color:var(--ink);font-size:15px;overflow-wrap:anywhere}
+.legal__table{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+.legal__table table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+.legal__table th,.legal__table td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-dim)}
+.legal__table tr:last-child td{border-bottom:0}
+.legal__table th{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:500}
+.legal__table td:first-child{font-family:var(--mono);font-size:13px;color:var(--ink);white-space:nowrap}
+@media (max-width:600px){.legal__card div{grid-template-columns:1fr;gap:4px}}
 
 /* ---------- servicios: perfil de vuelo con las cinco fases ---------- */
 .svc{position:relative;padding:clamp(90px,14vh,160px) var(--gutter);overflow:hidden;background:
@@ -483,16 +526,58 @@ img,svg{display:block}
 
 <!-- ================= CERTIFICACIONES ================= -->
 <section class="certs" id="certificados">
+  <div class="certs__grid" aria-hidden="true"></div>
   <div class="certs__head">
-    <h2 class="display" data-split-scroll>Certificaciones</h2>
-    <p data-fade>Las licencias que nos permiten operar en cualquier parte del mundo, cubriendo cualquier línea de conexión.</p>
+    <div>
+      <div class="eyebrow" data-fade>Certificaciones</div>
+      <h2 class="display" data-split-scroll>Licencias</h2>
+    </div>
+    <p data-fade>Las licencias y aprobaciones que nos permiten operar en cualquier parte del mundo, cubriendo cualquier línea de conexión.</p>
   </div>
-  <div class="cert" data-hover><span class="cert__n">01</span><span class="cert__t">A.O.C</span><span class="cert__d">Certificado de Operador Aéreo · Tipo A2</span><i class="cert__line"></i></div>
-  <div class="cert" data-hover><span class="cert__n">02</span><span class="cert__t">FAR Part 129</span><span class="cert__d">Operación a y dentro de Estados Unidos para operadores extranjeros</span><i class="cert__line"></i></div>
-  <div class="cert" data-hover><span class="cert__n">03</span><span class="cert__t">CAT II/III · LVTO</span><span class="cert__d">Aproximaciones y despegues con baja visibilidad</span><i class="cert__line"></i></div>
-  <div class="cert" data-hover><span class="cert__n">04</span><span class="cert__t">Mercancías peligrosas</span><span class="cert__d">Transporte de mercancías peligrosas</span><i class="cert__line"></i></div>
-  <div class="cert" data-hover><span class="cert__n">05</span><span class="cert__t">RVSM · MNPS</span><span class="cert__d">Separación vertical mínima reducida y especificaciones de navegación del Atlántico Norte</span><i class="cert__line"></i></div>
-  <div class="cert" data-hover><span class="cert__n">06</span><span class="cert__t">RNAV1 · RNAV5 · RNP APP</span><span class="cert__d">Navegación de área y aproximaciones RNP</span><i class="cert__line"></i></div>
+  <div class="lics">
+    <article class="lic">
+      <div class="lic__top"><span>Operador</span><span class="lic__issuer">AESA</span></div>
+      <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><path d="M23 4 L39 10 V21 C39 31 32 38 23 42 C14 38 7 31 7 21 V10 Z"/><path d="M15 23 l6 6 l11 -12"/></svg>
+      <h3 class="lic__t">A.O.C</h3>
+      <p class="lic__d">Certificado de Operador Aéreo · Tipo A2</p>
+      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
+    </article>
+    <article class="lic">
+      <div class="lic__top"><span>Internacional</span><span class="lic__issuer">FAA · EE. UU.</span></div>
+      <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="17"/><path d="M6 23h34M23 6c6 5 6 29 0 34M23 6c-6 5-6 29 0 34"/><path d="M10 14h26M10 32h26"/></svg>
+      <h3 class="lic__t">FAR Part 129</h3>
+      <p class="lic__d">Operación a y dentro de Estados Unidos para operadores extranjeros</p>
+      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
+    </article>
+    <article class="lic">
+      <div class="lic__top"><span>Baja visibilidad</span><span class="lic__issuer">AESA</span></div>
+      <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><path d="M14 42 L20 8 M32 42 L26 8"/><path d="M23 38v-4M23 28v-4M23 18v-3"/><path d="M4 16h10M32 16h10M6 24h8M34 24h8" stroke-dasharray="2 3"/></svg>
+      <h3 class="lic__t">CAT II/III · LVTO</h3>
+      <p class="lic__d">Aproximaciones y despegues con baja visibilidad</p>
+      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
+    </article>
+    <article class="lic">
+      <div class="lic__top"><span>Carga</span><span class="lic__issuer">AESA</span></div>
+      <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><path d="M23 3 L43 23 L23 43 L3 23 Z"/><path d="M23 14v13"/><circle cx="23" cy="32" r="1.2"/></svg>
+      <h3 class="lic__t">Mercancías peligrosas</h3>
+      <p class="lic__d">Transporte de mercancías peligrosas</p>
+      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
+    </article>
+    <article class="lic">
+      <div class="lic__top"><span>Espacio aéreo</span><span class="lic__issuer">AESA</span></div>
+      <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><path d="M5 11h36M5 23h36M5 35h36"/><path d="M15 15v4M15 27v4M31 15v4M31 27v4"/><path d="M12 18l3 3 3-3M28 30l3 3 3-3"/></svg>
+      <h3 class="lic__t">RVSM · MNPS</h3>
+      <p class="lic__d">Separación vertical mínima reducida y especificaciones de navegación del Atlántico Norte</p>
+      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
+    </article>
+    <article class="lic">
+      <div class="lic__top"><span>Navegación</span><span class="lic__issuer">AESA</span></div>
+      <svg class="lic__ico" viewBox="0 0 46 46" aria-hidden="true"><circle cx="8" cy="34" r="3"/><circle cx="21" cy="14" r="3"/><circle cx="38" cy="26" r="3"/><path d="M10 31 L19 17 M24 16 L35 24"/><path d="M38 8v8M34 12h8"/></svg>
+      <h3 class="lic__t">RNAV1 · RNAV5 · RNP APP</h3>
+      <p class="lic__d">Navegación de área y aproximaciones RNP</p>
+      <div class="lic__foot"><span>Corporación Cygnus Air</span><span>OACI · RGN</span></div>
+    </article>
+  </div>
 </section>
 
 <div class="eco">
@@ -519,7 +604,7 @@ img,svg{display:block}
       <div class="field"><input id="f-n" placeholder=" " autocomplete="name"><label for="f-n">Nombre</label><i></i></div>
       <div class="field"><input id="f-e" type="email" placeholder=" " autocomplete="email"><label for="f-e">Correo electrónico</label><i></i></div>
       <div class="field full"><textarea id="f-m" rows="4" placeholder=" "></textarea><label for="f-m">Mensaje</label><i></i></div>
-      <label class="check"><input type="checkbox"> <span>He leído y acepto la <a href="#">política de privacidad</a>.</span></label>
+      <label class="check"><input type="checkbox"> <span>He leído y acepto la <a href="#privacidad" data-legal="privacidad">política de privacidad</a>.</span></label>
       <button class="btn" type="submit" data-hover>Enviar mensaje →</button>
     </form>
   </div>
@@ -531,10 +616,12 @@ img,svg{display:block}
   <div class="footer__big display" data-split-scroll>Cygnus Air</div>
   <div class="footer__row">
     <span>© 2026 Cygnus Air · Grupo Swiftair</span>
-    <span><a href="#">Aviso legal</a> · <a href="#">Política de privacidad</a> · <a href="#">Política de cookies</a></span>
+    <span><a href="#aviso-legal" data-legal="aviso-legal">Aviso legal</a> · <a href="#privacidad" data-legal="privacidad">Política de privacidad</a> · <a href="#cookies" data-legal="cookies">Política de cookies</a></span>
     <a href="#top" data-hover>Volver arriba ↑</a>
   </div>
 </footer>
+
+<!--__LEGAL__-->
 
 <script>/*__GSAP__*/</script>
 <script>/*__SCROLLTRIGGER__*/</script>
@@ -599,6 +686,31 @@ img,svg{display:block}
     ctx.globalAlpha = 1;
   }
 
+  /* ---------- textos legales en un panel (aviso legal, privacidad, cookies) ---------- */
+  const legal = $('#legal'), LEGAL_IDS = ['aviso-legal', 'privacidad', 'cookies'];
+  let lenisRef = null;
+  const openLegal = id => {
+    const wasHidden = legal.hidden;
+    $$('.legal__doc', legal).forEach(d => d.hidden = d.dataset.doc !== id);
+    $$('.legal__tabs a', legal).forEach(a => a.classList.toggle('on', a.dataset.legal === id));
+    legal.hidden = false; legal.scrollTop = 0;
+    document.documentElement.classList.add('legal-open');
+    if (lenisRef) lenisRef.stop();
+    if (wasHidden && window.gsap && !reduce) gsap.fromTo(legal, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .6, ease: 'expo.out', clearProps: 'transform' });
+    try { history.replaceState(null, '', '#' + id); } catch (e) {}
+    $('#legal-close').focus({ preventScroll: true });
+  };
+  const closeLegal = () => {
+    legal.hidden = true;
+    document.documentElement.classList.remove('legal-open');
+    if (lenisRef) lenisRef.start();
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  };
+  document.addEventListener('click', e => { const a = e.target.closest('[data-legal]'); if (!a) return; e.preventDefault(); openLegal(a.dataset.legal); });
+  $('#legal-close').addEventListener('click', closeLegal);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !legal.hidden) closeLegal(); });
+  if (LEGAL_IDS.includes(location.hash.slice(1))) openLegal(location.hash.slice(1));
+
   /* ---------- cabecera con fondo al bajar ---------- */
   const header = $('.header');
   addEventListener('scroll', () => header.classList.toggle('is-scrolled', window.scrollY > 40), { passive: true });
@@ -614,11 +726,12 @@ img,svg{display:block}
   /* ---------- scroll suave ---------- */
   const lenis = new Lenis({ lerp: .09, smoothWheel: true });
   lenis.stop();
+  lenisRef = lenis;
   let velocity = 0;
   lenis.on('scroll', e => { ScrollTrigger.update(); velocity = e.velocity; scrollY = e.scroll; });
   gsap.ticker.add(t => { lenis.raf(t * 1000); drawSky(t * 1000); });
   gsap.ticker.lagSmoothing(0);
-  $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  $$('a[href^="#"]:not([data-legal])').forEach(a => a.addEventListener('click', e => {
     const id = a.getAttribute('href'); if (id.length < 2 && id !== '#top') return;
     e.preventDefault(); lenis.scrollTo(id === '#top' ? 0 : id, { duration: 1.6, offset: id === '#flota' ? 0 : -70 });
   }));
@@ -676,7 +789,7 @@ img,svg{display:block}
     .to(cLines, { strokeDashoffset: 0, duration: 1.2, stagger: .12, ease: 'power2.inOut' }, 'hero+=.7')
     .to('.c-names text', { autoAlpha: 1, duration: .8, stagger: .1 }, 'hero+=1.6')
     .to('.hero [data-fade]', { autoAlpha: 1, y: 0, duration: 1, stagger: .1 }, 'hero+=.8')
-    .add(() => { lenis.start(); $('.preloader').remove(); });
+    .add(() => { if (legal.hidden) lenis.start(); $('.preloader').remove(); });
   autoFly($('#fly-hero'), { duration: 11, gap: 3, delay: 3.2 });
 
   // al bajar: la foto se hunde, el titular se separa y la constelación gira
@@ -719,11 +832,21 @@ img,svg{display:block}
   };
   $$('.stats [data-count]').forEach(el => countUp(el, { scrollTrigger: { trigger: el, start: 'top 92%' } }));
 
-  /* ---------- certificaciones ---------- */
-  $$('.cert').forEach(c => {
-    const tl = gsap.timeline({ scrollTrigger: { trigger: c, start: 'top 90%' } });
-    tl.from($('.cert__line', c), { scaleX: 0, duration: 1.2, ease: 'expo.inOut' })
-      .from([...c.children].filter(x => !x.matches('.cert__line')), { yPercent: 100, autoAlpha: 0, duration: .9, stagger: .08, ease: 'expo.out' }, .2);
+  /* ---------- certificaciones: las tarjetas entran girando, dibujan su icono y se inclinan con el ratón ---------- */
+  gsap.from('.lic', { y: 90, rotationX: -40, autoAlpha: 0, transformOrigin: '50% 100%', duration: 1.3, stagger: .1, ease: 'expo.out', scrollTrigger: { trigger: '.lics', start: 'top 85%' } });
+  $$('.lic__ico path, .lic__ico circle').forEach(el => {
+    const L = el.getTotalLength();
+    if (el.getAttribute('stroke-dasharray')) return;
+    gsap.fromTo(el, { strokeDasharray: L, strokeDashoffset: L }, { strokeDashoffset: 0, duration: 1.6, delay: .4, ease: 'power2.inOut', scrollTrigger: { trigger: el.closest('.lic'), start: 'top 88%' } });
+  });
+  if (matchMedia('(hover: hover)').matches) $$('.lic').forEach(c => {
+    const rx = gsap.quickTo(c, 'rotationX', { duration: .6, ease: 'power3' }), ry = gsap.quickTo(c, 'rotationY', { duration: .6, ease: 'power3' });
+    c.addEventListener('pointermove', e => {
+      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      rx((.5 - y) * 12); ry((x - .5) * 14);
+      c.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); c.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+    });
+    c.addEventListener('pointerleave', () => { rx(0); ry(0); });
   });
 
   /* ---------- servicios: el avión recorre solo las cinco fases y va iluminando cada servicio ---------- */

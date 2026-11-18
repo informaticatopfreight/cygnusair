@@ -9,6 +9,7 @@ python3 - "$LIBS" "${ARTIFACT_OUT:-}" <<'PY'
 import sys, re, base64, mimetypes
 libs, art_out = sys.argv[1], sys.argv[2]
 src = open('src/index.html', encoding='utf-8').read()
+src = src.replace('<!--__LEGAL__-->', open('src/legal.html', encoding='utf-8').read())
 FILES = {'GSAP': 'gsap/dist/gsap.min.js', 'SCROLLTRIGGER': 'gsap/dist/ScrollTrigger.min.js',
          'MOTIONPATH': 'gsap/dist/MotionPathPlugin.min.js', 'LENIS': 'lenis/dist/lenis.min.js'}
 CDN = {'GSAP': 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js',
