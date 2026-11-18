@@ -1,0 +1,7 @@
+{
+  "name": "cygnusair",
+  "private": true,
+  "description": "Web de Cygnus Air: propuesta visual y tema de WordPress",
+  "scripts": { "build:propuesta": "propuesta/build.sh" },
+  "dependencies": { "gsap": "3.12.5", "lenis": "1.1.13" }
+}
